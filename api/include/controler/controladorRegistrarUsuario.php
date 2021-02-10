@@ -79,9 +79,29 @@ class controladorRegistrarUsuario extends ModeloUsuario{
     	  		}
     	  		$this->transaccionCommit();
     	  		///////////
+    	  		global $key;
+    	  		$issued_at = time();
+    	  		$expiration_time = $issued_at + (60 * 60); // valid for 1 hour
+    	  		$issuer = "http://localhost:81/rest/api/";
+    	  		$token = array(
+    	  				"iat" => $issued_at,
+    	  				"exp" => $expiration_time,
+    	  				"iss" => $issuer,
+    	  				"data" => array(
+    	  						"id" => $this->getIdUsuario(),
+    	  						"firstname" => $d['nombre'],
+    	  						"lastname" => $d['apellidop']  . $d['apellidom'],
+    	  						"email" => $d['email']
+    	  				)
+    	  		);
+    	  		// set response code
+    	  		http_response_code(200);
+    	  		// generate jwt
+    	  		$jwt = JWT::encode($token, $key);
     	  		
     	  		
-    	  		return json_encode(array("status" => "ok", "message" => "Informacion almacenada con exito."));;
+    	  		
+    	  		return json_encode(array("status" => "ok", "message" => "Usuario registrado con exito.", "token" => $jwt));;
     	  	}
       	}else{
       		return json_encode(array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401"));

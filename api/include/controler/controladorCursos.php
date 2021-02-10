@@ -38,28 +38,33 @@ class controladorCursos extends ModeloCurso{
     return $curso;
   }
 
-  public function postUsuario($datos) {
+  public function postCursos($datos) {
   	$d = json_decode($datos, true);
-  	if(!isset($d['token'])){
+  	//if(!isset($d['token'])){
+  		//return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  	global $key;
+  	$headers = getallheaders();
+  	
+  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
   		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  		http_response_code(401);  	
   	}else{
       try {        // decode jwt
         global $key;
-        $decoded = JWT::decode($d['token'], $key, array('HS256'));
+        $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-        if(isset($d['nombre']) && isset($d['apellidos'])){
+        if(isset($d['nombre']) && isset($d['categoria']) ){
       		$fecha = date('Y-m-j H:i:s');
-    	  	$this->setFcnombre($d['nombre']);
-    	  	$this->setFcapellidos($d['apellidos']);
-    	  	$this->setFccorreo($d['correo']);
-    	  	$this->setFctelefono($d['telefono']);
-    	  	$this->setFcestatusActivo();
-    	  	$this->setFdfecha_registro($fecha);
+    	  	$this->setNombreCurso($d['nombre']);
+    	  	$this->setPoster($d['poster']);
+    	  	$this->setIdCategoria($d['categoria']);
+    	  	$this->setIdUsuarioRegistro($decoded->data->id);
+    	  	$this->setFechaRegistro($fecha);    	  	
     	  	$this->Guardar();
     	  	if($this->getError()){
     	  		return json_encode(array("status" => "error", "message" => $this->getStrError()));
     	  	}else{
-    	  		return json_encode(array("status" => "ok", "message" => "Informacion almacenada con exito."));;
+    	  		return json_encode(array("status" => "ok", "message" => "Informacion almacenada con exito.",  "idCurso" => $this->getIdCurso(), "codigo"=> "200"));
     	  	}
       	}else{
       		return json_encode(array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401"));

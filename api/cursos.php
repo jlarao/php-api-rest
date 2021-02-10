@@ -28,16 +28,18 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
   require_once 'masterInclude.inc.php';
   require_once FOLDER_CONTROLLER. "controladorCursos.php";
   $cursos = new controladorCursos();
-  $usuario  = $usuarios->postUsuario($datos);
+  $usuario  = $cursos->postCursos($datos);
+  
   header("Content-Type: application/json; charset=UTF-8");
-  if(isset($usuario['status'])=="ok"){
+  //print_r($usuario);
+  if(isset($usuario['status']) && $usuario['status']=="ok"){
   	http_response_code(200);
-  }if(isset($usuario['status'])=="error"){
+  }elseif(isset($usuario['status']) && $usuario['status']=="error"){
   	if(isset($usuario['codigo'])){
   		http_response_code($usuario['codigo']);//http_response_code(401);
+  	}else{
+  		http_response_code(401);
   	}
-  }else{
-  	http_response_code(200);
   }
   echo $usuario;
 }elseif($_SERVER['REQUEST_METHOD'] == "PUT"){
