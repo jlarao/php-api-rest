@@ -1,13 +1,13 @@
 <?php
 
-	require FOLDER_MODEL_BASE . "model.base.tema_curso.inc.php";
+	require FOLDER_MODEL_BASE . "model.base.subtema_curso.inc.php";
 
-	class ModeloTema_curso extends ModeloBaseTema_curso
+	class ModeloSubtema_curso extends ModeloBaseSubtema_curso
 	{
 		#------------------------------------------------------------------------------------------------------#
 		#----------------------------------------------Propiedades---------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#
-		var $_nombreClase="ModeloBaseTema_curso";
+		var $_nombreClase="ModeloBaseSubtema_curso";
 
 		var $__ss=array();
 
@@ -41,30 +41,15 @@
 		#------------------------------------------------Getter------------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#
 
-		public function getByCourseId($id)
+		
+		
+		public function getByTemaCursoId($id)
 		{
 		
-			$query = "SELECT idTema, nombreTema, idUsuarioRegistro FROM tema_curso WHERE
-					idCurso = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
+			$query = " select idSubTema, nombreSubTema  FROM subtema_curso WHERE idTema
+					= '" . mysqli_real_escape_string($this->dbLink, $id) . "'
 					";
 			//return $query;
-			$arreglo = array();
-			$resultado = mysqli_query($this->dbLink, $query);
-			if ($resultado && mysqli_num_rows($resultado) > 0) {
-				while ($row_inf = mysqli_fetch_assoc($resultado)){
-					$arreglo[] = $row_inf;
-				}
-			}
-			return $arreglo;
-		}
-		
-		public function getCategoriasPorCurso($idCurso)
-		{
-			//$inicial = (($pagina) * $tamano);
-			$query = "SELECT idTema, nombreTema
-			FROM tema_curso where idCurso = '" . mysqli_real_escape_string($this->dbLink, $idCurso) . "'
-			
-			";
 			$arreglo = array();
 			$resultado = mysqli_query($this->dbLink, $query);
 			if ($resultado && mysqli_num_rows($resultado) > 0) {

@@ -7,27 +7,45 @@ require_once 'masterInclude.inc.php';
 if($_SERVER['REQUEST_METHOD'] == "GET"){
   if( isset($_GET['page']) ){
     require_once 'masterInclude.inc.php';
-    require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
-  	$cursos = new controladorTema_Curso();
-    header("Content-Type: application/json; charset=UTF-8");
-  	echo json_encode($cursos->obtenerCursos($_GET['page'],5));
+    require_once FOLDER_CONTROLLER. "controladorsubTemaCurso.php";
+  	$cursos = new controladorSubtema_curso();
+    //header("Content-Type: application/json; charset=UTF-8");
+  	//echo json_encode($cursos->obtenerCursos($_GET['page'],5));
     http_response_code(200);
-    //echo "get";
+    echo "get";
   }elseif( isset($_GET['id']) ){
     require_once 'masterInclude.inc.php';
-    require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
-  	$cursos = new controladorTema_Curso();
-    header("Content-Type: application/json; charset=UTF-8");
-  	echo json_encode($cursos->obtenerCurso($_GET['id']));
+    require_once FOLDER_CONTROLLER. "controladorsubTemaCurso.php";
+  	//$cursos = new controladorSubtema_curso();
+    //header("Content-Type: application/json; charset=UTF-8");
+  	//echo json_encode($cursos->obtenerCurso($_GET['id']));
     http_response_code(200);
     //echo "get";
   }elseif( isset($_GET['byCourse']) ){
     require_once 'masterInclude.inc.php';
-    require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
+    require_once FOLDER_CONTROLLER. "controladorsubTemaCurso.php";
     
-  	$cursos = new controladorTema_Curso();
+  	//$cursos = new controladorSubtema_curso();
+    //header("Content-Type: application/json; charset=UTF-8");
+  	//$curso = $cursos->obtenerByCourseId($_GET['byCourse']);
+  	
+  	//if(isset($curso['status']) && $curso['status']=="ok"){
+  		http_response_code(200);
+  	//}elseif(isset($curso['status']) && $curso['status']=="error"){
+  		//if(isset($curso['codigo'])){
+  			//http_response_code($curso['codigo']);//http_response_code(401);
+  		//}else{
+  			//http_response_code(401);
+  		//}
+  	//}
+  	//echo json_encode($curso);
+  }elseif( isset($_GET['idTemaCurso']) ){
+    require_once 'masterInclude.inc.php';
+    require_once FOLDER_CONTROLLER. "controladorsubTemaCurso.php";
+    //echo "idTemaCurso";
+  	$cursos = new controladorSubtema_curso();
     header("Content-Type: application/json; charset=UTF-8");
-  	$curso = $cursos->obtenerByCourseId($_GET['byCourse']);
+  	$curso = $cursos->obtenerByTemaCursoId($_GET['idTemaCurso']);
   	
   	if(isset($curso['status']) && $curso['status']=="ok"){
   		http_response_code(200);
@@ -40,13 +58,14 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
   	}
   	echo json_encode($curso);
   }
+  
 }
 elseif($_SERVER['REQUEST_METHOD'] == "POST"){
   $datos = file_get_contents("php://input");
   require_once 'masterInclude.inc.php';
-  require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
-  $cursos = new controladorTema_Curso();
-  $usuario  = $cursos->postTemaCurso($datos);
+  require_once FOLDER_CONTROLLER. "controladorsubTemaCurso.php";
+  $cursos = new controladorSubtema_curso();
+  $usuario  = $cursos->postSubTemaCurso($datos);
   
   header("Content-Type: application/json; charset=UTF-8");
  // var_dump( $usuario);
@@ -65,7 +84,7 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
   //echo "ut";
 	$datos = file_get_contents("php://input");
 	require_once 'masterInclude.inc.php';
-	require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
+	require_once FOLDER_CONTROLLER. "controladorsubTemaCurso.php";
 	$cursos = new controladorTema_Curso();
 	$usuario  = $usuarios->putUsuario($datos);
 	header("Content-Type: application/json; charset=UTF-8");
@@ -80,7 +99,7 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
   //echo "delete";
 	$datos = file_get_contents("php://input");
 	require_once 'masterInclude.inc.php';
-	require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
+	require_once FOLDER_CONTROLLER. "controladorsubTemaCurso.php";
 	$cursos = new controladorTema_Curso();
 	$usuario  = $usuarios->deleteUsuario($datos);
 	header("Content-Type: application/json; charset=UTF-8");

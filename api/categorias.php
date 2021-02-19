@@ -28,7 +28,13 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 	}
 }
 elseif($_SERVER['REQUEST_METHOD'] == "POST"){
-  	http_response_code(200);	 
+	require_once 'masterInclude.inc.php';
+	require_once FOLDER_CONTROLLER. "controladorCategorias.php";
+	$datos = file_get_contents("php://input");
+	$categorias = new controladorCategoria_curso;
+	$usuario  = $categorias->postUsuario($datos);
+	header("Content-Type: application/json; charset=UTF-8");
+  	
 }elseif($_SERVER['REQUEST_METHOD'] == "PUT"){
 		http_response_code(200);
 }elseif($_SERVER['REQUEST_METHOD'] == "DELETE"){
