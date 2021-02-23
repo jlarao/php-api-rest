@@ -99,13 +99,10 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
   }
   }
   
-  public function postSubTemaCurso($datos) {
-  	$d = json_decode($datos, true);
-  	//if(!isset($d['token'])){
-  		//return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  public function postHerramientasCurso($datos) {
+  	$d = json_decode($datos, true);  	
   	global $key;
-  	$headers = getallheaders();
-  	
+  	$headers = getallheaders();  	
   	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		//http_response_code(401);  	
@@ -114,53 +111,36 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
         global $key;
         $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-        if(isset($d['subTema']) && !empty($d['subTema']) && isset($d['agregarVideo']) && !empty($d['agregarVideo'])
-        		&&	isset($d['url']) &&	!empty($d['url']) && isset($d['idTema']) && !empty($d['idTema'])
-        		&& isset($d['tituloVideo']) && !empty($d['tituloVideo']) ){
-      		$fecha = date('Y-m-j H:i:s');
-      		$this->transaccionIniciar();
-    	  	$this->setNombreSubTema($d['subTema']);
-    	  	$this->setIdTema($d['idTema']);
-    	  	$this->setIdUsuarioRegistro($decoded->data->id);
-    	  	$this->setFechaRegistro($fecha);    	  	
-    	  	$this->Guardar();
-    	  	if($this->getError()){
-    	  		$this->transaccionRollback();
-    	  		return (array("status" => "error", "message" => $this->getStrError(), "codigo"=> "401"));
-    	  	}else{
-    	  		require_once FOLDER_MODEL_EXTEND. "model.herramientas_curso.inc.php";
-    	  		$her_cur = new ModeloHerramientas_curso();
-    	  		$her_cur->setNombreHerramienta($d['tituloVideo']);
-    	  		$her_cur->setIdTipoHerramienta(1);
-    	  		$her_cur->setUrlHerramienta($d['url']);
-    	  		$her_cur->setAgregarVideo($d['agregarVideo']);
-    	  		$her_cur->setIdTema($this->getIdSubTema());//tabla subtema_curso 
-    	  		$her_cur->setFormatoHerramienta("video/mp4,video/x-m4v,video/*");
-    	  		$her_cur->setIdUsuarioRegistro($decoded->data->id);
-    	  		$her_cur->Guardar();
-    	  		if($her_cur->getError()){
+        if(isset($d['urlHerramienta']) && !empty($d['urlHerramienta']) 
+        		&& isset($d['agregarVideo'])        		 
+        		&& isset($d['idTema']) && !empty($d['idTema'])
+        		&& isset($d['nombreHerramienta']) && !empty($d['nombreHerramienta']) ){
+      			$fecha = date('Y-m-j H:i:s');   		    	  	    	  		
+    	  		
+    	  		$this->setNombreHerramienta($d['nombreHerramienta']);
+    	  		$this->setUrlHerramienta($d['urlHerramienta']);    	  			
+    	  		$this->setIdTema($d['idTema']);//tabla subtema_curso
+    	  		$this->setFechaRegistro($fecha);
+    	  		$this->setEstatusActivo();
+    	  		if(!empty($d['agregarVideo'])){
+	    	  		$this->setIdTipoHerramienta(1);
+	    	  		$this->setAgregarVideo($d['agregarVideo']);  	  		    	  		 
+	    	  		$this->setFormatoHerramienta("video/mp4,video/x-m4v,video/*");
+    	  		}else{
+    	  			$this->setIdTipoHerramienta(2);
+    	  			$this->setFormatoHerramienta("pdf");
+    	  		}
+    	  		
+    	  		$this->setIdUsuarioRegistro($decoded->data->id);
+    	  		$this->Guardar();
+    	  		if($this->getError()){
     	  			$this->transaccionRollback();
-    	  			return (array("status" => "error", "message" => "Error al guardar la informacón." . $her_cur->getStrError(), "codigo"=> "401"));
-    	  		}
-    	  		if(isset($d['urlPdf']) && !empty($d['urlPdf']) && isset($d['tituloDocumento']) && !empty($d['tituloDocumento'])){
-    	  			$her_cur = new ModeloHerramientas_curso();
-    	  			$her_cur->setNombreHerramienta($d['tituloDocumento']);
-    	  			$her_cur->setIdTipoHerramienta(2);
-    	  			$her_cur->setUrlHerramienta($d['urlPdf']);
-    	  			$her_cur->setIdTema($this->getIdSubTema());//tabla subtema_curso
-    	  			$her_cur->setFormatoHerramienta("pdf");
-    	  			$her_cur->setIdUsuarioRegistro($decoded->data->id);
-    	  			$her_cur->Guardar();
-    	  			if($her_cur->getError()){
-    	  				$this->transaccionRollback();
-    	  				return (array("status" => "error", "message" => "Error al guardar la informacón.". $her_cur->getStrError(), "codigo"=> "401"));
-    	  			}	
-    	  		}
-				$this->transaccionCommit();
+    	  			return (array("status" => "error", "message" => "Error al guardar la informacón." . $this->getStrError() , "codigo"=> "401"));
+    	  		}   	  						
 				
     	  		//$categ = $this->getCategoriasPorCurso($d['id']);
-    	  		return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200"));
-    	  	}
+    	  		return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200" , "data" => $this->getIdHerramientaCurso()));
+    	  	
       	}else{
       		return (array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401"));
     	}
@@ -189,9 +169,27 @@ catch (Exception $e){
   			global $key;
   			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-  			if(isset($d['idHerramientaCurso']) && !empty($d['idHerramientaCurso'])	 ){
+  			if(isset($d['idHerramientaCurso']) && !empty($d['idHerramientaCurso']) &&	isset($d['agregarVideo']) && !empty($d['agregarVideo']) 
+  					&&	isset($d['urlHerramienta']) && !empty($d['urlHerramienta']) ){
   						$fecha = date('Y-m-j H:i:s');
-  						$this->setIdHerramientaCurso('');  						
+  						$this->setIdHerramientaCurso($d['idHerramientaCurso']);  						
+  						$this->setUrlHerramienta($d['urlHerramienta']); 
+  						$this->setAgregarVideo($d['agregarVideo']);
+  						$this->setFormatoHerramienta($d['formatoHerramienta']);
+  						$this->Guardar();
+  						if($this->getError()){  							
+  							return (array("status" => "error", "message" => $this->getStrError(), "codigo"=> "401"));
+  						}  							  	
+  							//$categ = $this->getCategoriasPorCurso($d['id']);
+  							return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200"));
+  						}
+  			else if(isset($d['idHerramientaCurso']) && !empty($d['idHerramientaCurso']) &&	isset($d['urlHerramienta']) && !empty($d['urlHerramienta']) &&
+  							isset($d['formatoHerramienta']) && !empty($d['formatoHerramienta']) && ($d['formatoHerramienta'] == "pdf") ){
+  						$fecha = date('Y-m-j H:i:s');
+  						$this->setIdHerramientaCurso($d['idHerramientaCurso']);
+  						$this->setIdTipoHerramienta(2);
+  						$this->setNombreHerramienta($d['nombreHerramienta']);
+  						$this->setFormatoHerramienta("pdf");
   						$this->setUrlHerramienta($d['urlHerramienta']);  						
   						$this->Guardar();
   						if($this->getError()){  							
@@ -226,7 +224,19 @@ catch (Exception $e){
         try {        // decode jwt
           $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
           // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-          if(isset($_GET['idHerramientaCurso']) && !empty($_GET['idHerramientaCurso'])){
+          if(isset($_GET['idHerramientaCurso']) && !empty($_GET['idHerramientaCurso']) 
+          		&& isset($_GET['estatus']) && !empty($_GET['estatus'])){
+          			$this->setIdHerramientaCurso($_GET['idHerramientaCurso']);
+          			$this->setEstatusSuspendido();
+          			//$this->setFdfecha_registro($fecha);
+          			$this->Guardar();
+          			if($this->getError()){
+          				return json_encode(array("status" => "error", "message" => "ocurrio un Error."));
+          			
+          			}else{
+          				return json_encode(array("status" => "ok", "message" => "Informacion eliminada con exito."));;
+          			}
+          }else       if(isset($_GET['idHerramientaCurso']) && !empty($_GET['idHerramientaCurso'])){
       			$fecha = date('Y-m-j H:i:s');
       			$this->setIdHerramientaCurso($_GET['idHerramientaCurso']);
       			$this->setUrlHerramienta(""); 

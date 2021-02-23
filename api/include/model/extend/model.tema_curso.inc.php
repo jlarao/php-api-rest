@@ -45,7 +45,7 @@
 		{
 		
 			$query = "SELECT idTema, nombreTema, idUsuarioRegistro FROM tema_curso WHERE
-					idCurso = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
+					idCurso = '" . mysqli_real_escape_string($this->dbLink, $id) . "' and estatus ='Activo'
 					";
 			//return $query;
 			$arreglo = array();
@@ -65,6 +65,23 @@
 			FROM tema_curso where idCurso = '" . mysqli_real_escape_string($this->dbLink, $idCurso) . "'
 			
 			";
+			$arreglo = array();
+			$resultado = mysqli_query($this->dbLink, $query);
+			if ($resultado && mysqli_num_rows($resultado) > 0) {
+				while ($row_inf = mysqli_fetch_assoc($resultado)){
+					$arreglo[] = $row_inf;
+				}
+			}
+			return $arreglo;
+		}
+		
+		public function getIdsByCourseId($id)
+		{
+		
+			$query = "SELECT idTema FROM tema_curso WHERE
+					idCurso = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
+					";
+			//return $query;
 			$arreglo = array();
 			$resultado = mysqli_query($this->dbLink, $query);
 			if ($resultado && mysqli_num_rows($resultado) > 0) {

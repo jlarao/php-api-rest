@@ -1,13 +1,13 @@
 <?php
 
-	require FOLDER_MODEL_BASE . "model.base.curso.inc.php";
+	require FOLDER_MODEL_BASE . "model.base.subtema_curso.inc.php";
 
-	class ModeloCurso extends ModeloBaseCurso
+	class ModeloSubtema_curso extends ModeloBaseSubtema_curso
 	{
 		#------------------------------------------------------------------------------------------------------#
 		#----------------------------------------------Propiedades---------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#
-		var $_nombreClase="ModeloBaseCurso";
+		var $_nombreClase="ModeloBaseSubtema_curso";
 
 		var $__ss=array();
 
@@ -56,56 +56,6 @@
 			return true;
 		}
 
-		public function getCurso($id)
-		{
-				
-			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, apellidoMaterno, avatar  
-			FROM curso c left join usuario u on u.idUsuario = c.idUsuarioRegistro
-					where idCurso = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
-					";
-			$arreglo = array(); 
-			$resultado = mysqli_query($this->dbLink, $query);
-			if ($resultado && mysqli_num_rows($resultado) > 0) {
-				while ($row_inf = mysqli_fetch_assoc($resultado)){
-					$arreglo = $row_inf;
-				}
-			}
-			return $arreglo;
-		}
-		
-		public function getCursos($pagina,$tamano)
-		{
-			$inicial = (($pagina) * $tamano);
-			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, apellidoMaterno  , avatar
-			FROM curso c left join usuario u on u.idUsuario = c.idUsuarioRegistro
-			LIMIT $inicial, $tamano
-			";
-			$arreglo = array();
-			$resultado = mysqli_query($this->dbLink, $query);
-			if ($resultado && mysqli_num_rows($resultado) > 0) {
-				while ($row_inf = mysqli_fetch_assoc($resultado)){
-					$arreglo[] = $row_inf;
-				}
-			}
-			return $arreglo;
-		}
-		
-		public function getCursosInstructorId($id)
-		{
-		
-			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, apellidoMaterno, avatar
-			FROM curso c left join usuario u on u.idUsuario = c.idUsuarioRegistro
-					where idUsuarioRegistro = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
-					";
-			$arreglo = array();
-			$resultado = mysqli_query($this->dbLink, $query);
-			if ($resultado && mysqli_num_rows($resultado) > 0) {
-				while ($row_inf = mysqli_fetch_assoc($resultado)){
-					$arreglo[] = $row_inf;
-				}
-			}
-			return $arreglo;
-		}
 
 	}
 

@@ -51,23 +51,23 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
   $datos = file_get_contents("php://input");
   require_once 'masterInclude.inc.php';
   require_once FOLDER_CONTROLLER. "controladorHerramientasCurso.php";
-  //$cursos = new controladorSubtema_curso();
-  //$usuario  = $cursos->postSubTemaCurso($datos);
+  $hc = new controladorHerramientas_curso();
+  $h  = $hc->postHerramientasCurso($datos);
   
   header("Content-Type: application/json; charset=UTF-8");
  // var_dump( $usuario);
- /* if(isset($usuario['status']) && $usuario['status']=="ok"){  	
+  if(isset($h['status']) && $h['status']=="ok"){  	
   	http_response_code(200);
   }
-  if(isset($usuario['status']) && $usuario['status']=="error"){
-  	if(isset($usuario['codigo'])){
-  		http_response_code($usuario['codigo']);//http_response_code(401);  		
+  if(isset($h['status']) && $h['status']=="error"){
+  	if(isset($h['codigo'])){
+  		http_response_code($h['codigo']);//http_response_code(401);  		
   	}else{  		
   		http_response_code(401);
   	}
-  }*/
- // echo json_encode($usuario);
- echo "post";
+  }
+  echo json_encode($h);
+ //echo "post";
 }elseif($_SERVER['REQUEST_METHOD'] == "PUT"){ 
 	$datos = file_get_contents("php://input");
 	require_once 'masterInclude.inc.php';

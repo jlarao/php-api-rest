@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
     require_once FOLDER_CONTROLLER. "controladorCursos.php";
   	$cursos = new controladorCursos();
     header("Content-Type: application/json; charset=UTF-8");
-  	echo json_encode($cursos->obtenerCursos($_GET['page'],5));
+  	echo json_encode($cursos->obtenerCursos($_GET['page'],6));
     http_response_code(200);
     //echo "get";
   }elseif( isset($_GET['id']) ){
@@ -21,6 +21,42 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
   	echo json_encode($cursos->obtenerCurso($_GET['id']));
     http_response_code(200);
     //echo "get";
+  }elseif( isset($_GET['instruc']) ){
+    require_once 'masterInclude.inc.php';
+    require_once FOLDER_CONTROLLER. "controladorCursos.php";
+  	$cursos = new controladorCursos();
+    header("Content-Type: application/json; charset=UTF-8");
+  	$r = $cursos->obtenerCursosInstructor($_GET['instruc']);
+  	
+    if(isset($r['status']) && $r['status']=="ok"){
+  	  http_response_code(200);
+    }elseif(isset($r['status']) && $r['status']=="error"){
+  	  if(isset($r['codigo'])){
+  		http_response_code($r['codigo']);//http_response_code(401);
+  	  }else{
+  		http_response_code(401);
+  	  } 
+    }
+    //var_dump($r);
+  	echo json_encode($r);
+  }elseif( isset($_GET['idRep']) ){
+    require_once 'masterInclude.inc.php';
+    require_once FOLDER_CONTROLLER. "controladorCursos.php";
+  	$cursos = new controladorCursos();
+    header("Content-Type: application/json; charset=UTF-8");
+  	$r = $cursos->obtenerCursosRepro($_GET['idRep']);
+  	
+    if(isset($r['status']) && $r['status']=="ok"){
+  	  http_response_code(200);
+    }elseif(isset($r['status']) && $r['status']=="error"){
+  	  if(isset($r['codigo'])){
+  		http_response_code($r['codigo']);//http_response_code(401);
+  	  }else{
+  		http_response_code(401);
+  	  } 
+    }
+    //var_dump($r);
+  	echo json_encode($r);
   }
 }
 elseif($_SERVER['REQUEST_METHOD'] == "POST"){

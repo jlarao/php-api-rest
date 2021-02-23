@@ -66,31 +66,40 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 	$datos = file_get_contents("php://input");
 	require_once 'masterInclude.inc.php';
 	require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
-	$cursos = new controladorTema_Curso();
-	$usuario  = $usuarios->putUsuario($datos);
+	$tema = new controladorTema_Curso();
+	$usuario  = $tema->putUsuario($datos);
 	header("Content-Type: application/json; charset=UTF-8");
-	if(isset($usuario['status'])=="ok"){
-		http_response_code(200);
 
-	}else{
-		http_response_code(200);
-	}
-	echo $usuario;
+  if(isset($usuario['status']) && $usuario['status']=="ok"){  	
+  	http_response_code(200);
+  }
+  if(isset($usuario['status']) && $usuario['status']=="error"){
+  	if(isset($usuario['codigo'])){
+  		http_response_code($usuario['codigo']);//http_response_code(401);  		
+  	}else{  		
+  		http_response_code(401);
+  	}
+  }
+	echo json_encode($usuario);
 }elseif($_SERVER['REQUEST_METHOD'] == "DELETE"){
   //echo "delete";
 	$datos = file_get_contents("php://input");
 	require_once 'masterInclude.inc.php';
 	require_once FOLDER_CONTROLLER. "controladorTemaCurso.php";
-	$cursos = new controladorTema_Curso();
-	$usuario  = $usuarios->deleteUsuario($datos);
+	$tema = new controladorTema_Curso();
+	$usuario  = $tema->deleteUsuario($datos);
 	header("Content-Type: application/json; charset=UTF-8");
-	if(isset($usuario['status'])=="ok"){
-		http_response_code(200);
-
-	}else{
-		http_response_code(200);
-	}
-	echo $usuario;
+	if(isset($usuario['status']) && $usuario['status']=="ok"){  	
+  	http_response_code(200);
+  }
+  if(isset($usuario['status']) && $usuario['status']=="error"){
+  	if(isset($usuario['codigo'])){
+  		http_response_code($usuario['codigo']);//http_response_code(401);  		
+  	}else{  		
+  		http_response_code(401);
+  	}
+  }
+	echo json_encode($usuario);
 }else{
   header("Content-Type: application/json; charset=UTF-8");
   echo json_encode(array("status" => "error", "message" => "Metodo no permitido."));

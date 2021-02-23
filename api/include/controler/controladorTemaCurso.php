@@ -79,7 +79,8 @@ class controladorTema_Curso extends ModeloTema_curso{
     	  	$this->setNombreTema($d['seccion']);
     	  	$this->setIdCurso($d['id']);
     	  	$this->setIdUsuarioRegistro($decoded->data->id);
-    	  	$this->setFechaRegistro($fecha);    	  	
+    	  	$this->setFechaRegistro($fecha);    
+    	  	$this->setEstatusActivo();
     	  	$this->Guardar();
     	  	if($this->getError()){
     	  		return (array("status" => "error", "message" => $this->getStrError(), "codigo"=> "401"));
@@ -103,30 +104,32 @@ catch (Exception $e){
   public function putUsuario($datos) {
   	//
   	$d = json_decode($datos,true);
-    if(!isset($d['token'])){
-  		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  	global $key;
+  	$headers = getallheaders();
+  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  		//http_response_code(401);  	
   	}else{
       try {        // decode jwt
-        $decoded = JWT::decode($d['token'], $key, array('HS256'));
+        $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-        if(isset($d['id'])){
+        if(isset($d['nombreTema']) && isset($d['nombreTema']) &&
+        		isset($d['idTema']) && !empty($d['idTema'])){
       		$fecha = date('Y-m-j H:i:s');
-      		$this->setFiusuario_id($d['id']);
-      		$this->setFcnombre($d['nombre']);
-      		$this->setFcapellidos($d['apellidos']);
-      		$this->setFccorreo($d['correo']);
-      		$this->setFctelefono($d['telefono']);
-      		$this->setFcestatusActivo();
-      		//$this->setFdfecha_registro($fecha);
+      		$this->setIdTema($d['idTema']);
+      		$this->setNombreTema($d['nombreTema']);
+      		
+      		//$this->setFcestatusActivo();
+      		
       		$this->Guardar();
       		if($this->getError()){
-      			return json_encode(array("status" => "error", "message" => $this->getStrError()));
+      			return (array("status" => "error", "message" => $this->getStrError(), "codigo"=> "400" , "data"=> Array()));
 
       		}else{
-      			return json_encode(array("status" => "ok", "message" => "Informacion almacenada con exito."));;
+      			return (array("status" => "ok", "message" => "Informacion almacenada con exito." , "codigo"=> "200","data"=> Array()));;
       		}
       	}else{
-      		return json_encode(array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto."));
+      		return (array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto.", "codigo"=> "400", "data"=> Array()));
       	}
     }
     // if decode fails, it means jwt is invalid
@@ -134,23 +137,26 @@ catch (Exception $e){
     // set response code     //http_response_code(401);
     // tell the user access denied  & show error message
     //echo json_encode(array(        "message" => "Access denied.",        "error" => $e->getMessage()    ));
-    return json_encode(array("status" => "error", "message" => $e->getMessage(), "codigo"=> "400"));
+    return (array("status" => "error", "message" => $e->getMessage(), "codigo"=> "400" , "data"=> Array()));
     }
   	}
   }
   	public function deleteUsuario($datos) {
   		//
   		$d = json_decode($datos,true);
-      if(!isset($d['token'])){
-    		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
-    	}else{
-        try {        // decode jwt
-          $decoded = JWT::decode($d['token'], $key, array('HS256'));
+  		global $key;
+  	$headers = getallheaders();
+  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  		//http_response_code(401);  	
+  	}else{       // decode jwt
+  		try {
+          $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
           // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-          if(isset($d['id'])){
+          if(isset($_GET['idTema']) && !empty($_GET['idTema'])){
       			$fecha = date('Y-m-j H:i:s');
-      			$this->setFiusuario_id($d['id']);
-      			$this->setFcestatusSuspendido();
+      			$this->setIdTema($_GET['idTema']);
+      			$this->setEstatusSuspendido();
       			//$this->setFdfecha_registro($fecha);
       			$this->Guardar();
       			if($this->getError()){

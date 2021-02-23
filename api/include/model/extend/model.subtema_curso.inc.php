@@ -46,10 +46,8 @@
 		public function getByTemaCursoId($id)
 		{
 		
-			$query = " select idSubTema, nombreSubTema  FROM subtema_curso WHERE idTema
-					= '" . mysqli_real_escape_string($this->dbLink, $id) . "'
-					";
-			//return $query;
+		$query = " select idSubTema, nombreSubTema, idTema  FROM subtema_curso WHERE idTema= '" . mysqli_real_escape_string($this->dbLink, $id) . "' and estatus ='Activo' ";
+		
 			$arreglo = array();
 			$resultado = mysqli_query($this->dbLink, $query);
 			if ($resultado && mysqli_num_rows($resultado) > 0) {
@@ -57,9 +55,12 @@
 					$arreglo[] = $row_inf;
 				}
 			}
+		
+			
 			return $arreglo;
 		}
 
+		
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#

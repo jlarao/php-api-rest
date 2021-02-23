@@ -44,7 +44,7 @@
 		public function getBySubTemaId($id)
 		{
 		
-			$query = " SELECT idHerramientaCurso, nombreHerramienta, urlHerramienta, formatoHerramienta, agregarVideo, nombreTipo, idTema  FROM herramientas_curso hc join tipo_herramienta th on th.idTipoHerramienta = hc.idTipoHerramienta where idTema = '" . mysqli_real_escape_string($this->dbLink, $id) . "'";
+			$query = " SELECT idHerramientaCurso, nombreHerramienta, urlHerramienta, formatoHerramienta, agregarVideo, nombreTipo, idTema, estatus  FROM herramientas_curso hc join tipo_herramienta th on th.idTipoHerramienta = hc.idTipoHerramienta where idTema = '" . mysqli_real_escape_string($this->dbLink, $id) . "'";
 			//return $query;
 			$arreglo = array();
 			$resultado = mysqli_query($this->dbLink, $query);

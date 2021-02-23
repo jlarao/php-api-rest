@@ -15,8 +15,9 @@
 		var $horarioFin='';
 		var $fechaRegistro='';
 		var $idUsuarioRegistro=0;
+		var $estatus='';
 
-		var $__s=array("idTema","nombreTema","idCurso","horarioInicio","horarioFin","fechaRegistro","idUsuarioRegistro");
+		var $__s=array("idTema","nombreTema","idCurso","horarioInicio","horarioFin","fechaRegistro","idUsuarioRegistro","estatus");
 		var $__ss=array();
 
 		#------------------------------------------------------------------------------------------------------#
@@ -71,6 +72,19 @@
 			
 			$this->idUsuarioRegistro=$idUsuarioRegistro;
 		}
+		public function setEstatus($estatus)
+		{
+			
+			$this->estatus=$estatus;
+		}
+		public function setEstatusActivo()
+		{
+			$this->estatus='Activo';
+		}
+		public function setEstatusSuspendido()
+		{
+			$this->estatus='Suspendido';
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#-----------------------------------------------Unsetter-----------------------------------------------#
@@ -111,6 +125,10 @@
 		{
 			return $this->idUsuarioRegistro;
 		}
+		public function getEstatus()
+		{
+			return $this->estatus;
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#
@@ -132,6 +150,7 @@
 			$this->horarioFin='';
 			$this->fechaRegistro='';
 			$this->idUsuarioRegistro=0;
+			$this->estatus='';
 		}
 
 		
@@ -141,8 +160,8 @@
 		{
 			try
 			{
-				$SQL="INSERT INTO tema_curso(nombreTema,idCurso,horarioInicio,horarioFin,fechaRegistro,idUsuarioRegistro)
-						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreTema) . "','" . mysqli_real_escape_string($this->dbLink,$this->idCurso) . "','" . mysqli_real_escape_string($this->dbLink,$this->horarioInicio) . "','" . mysqli_real_escape_string($this->dbLink,$this->horarioFin) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "')";
+				$SQL="INSERT INTO tema_curso(nombreTema,idCurso,horarioInicio,horarioFin,fechaRegistro,idUsuarioRegistro,estatus)
+						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreTema) . "','" . mysqli_real_escape_string($this->dbLink,$this->idCurso) . "','" . mysqli_real_escape_string($this->dbLink,$this->horarioInicio) . "','" . mysqli_real_escape_string($this->dbLink,$this->horarioFin) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "')";
 				$result=mysqli_query($this->dbLink,$SQL);
 				if(!$result)
 					return $this->setSystemError("Error en la insercion de registro.","[" . $SQL . "][" . mysqli_error($this->dbLink) . "][ModeloBaseTema_curso::Insertar]");
@@ -162,7 +181,7 @@
 		{
 			try
 			{
-				$SQL="UPDATE tema_curso SET nombreTema='" . mysqli_real_escape_string($this->dbLink,$this->nombreTema) . "',idCurso='" . mysqli_real_escape_string($this->dbLink,$this->idCurso) . "',horarioInicio='" . mysqli_real_escape_string($this->dbLink,$this->horarioInicio) . "',horarioFin='" . mysqli_real_escape_string($this->dbLink,$this->horarioFin) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "'
+				$SQL="UPDATE tema_curso SET nombreTema='" . mysqli_real_escape_string($this->dbLink,$this->nombreTema) . "',idCurso='" . mysqli_real_escape_string($this->dbLink,$this->idCurso) . "',horarioInicio='" . mysqli_real_escape_string($this->dbLink,$this->horarioInicio) . "',horarioFin='" . mysqli_real_escape_string($this->dbLink,$this->horarioFin) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "',estatus='" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "'
 					WHERE idTema=" . $this->idTema;
 				
 				$result=mysqli_query($this->dbLink,$SQL);
@@ -204,7 +223,7 @@
 			try
 			{
 				$SQL="SELECT
-						idTema,nombreTema,idCurso,horarioInicio,horarioFin,fechaRegistro,idUsuarioRegistro
+						idTema,nombreTema,idCurso,horarioInicio,horarioFin,fechaRegistro,idUsuarioRegistro,estatus
 					FROM tema_curso
 					WHERE idTema=" . mysqli_real_escape_string($this->dbLink,$this->idTema);
 					
