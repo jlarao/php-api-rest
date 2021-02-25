@@ -187,7 +187,8 @@ class controladorSubtema_curso extends ModeloSubtema_curso{
     	  		$her_cur->setUrlHerramienta($d['url']);
     	  		$her_cur->setAgregarVideo($d['agregarVideo']);
     	  		$her_cur->setIdTema($this->getIdSubTema());//tabla subtema_curso 
-    	  		$her_cur->setFormatoHerramienta("video/mp4,video/x-m4v,video/*");
+    	  		$her_cur->setFormatoHerramienta($d['formatoHerramienta']);
+    	  		$her_cur->setDuracion($d['duracion']);
     	  		$her_cur->setIdUsuarioRegistro($decoded->data->id);
     	  		$her_cur->setEstatusActivo();
     	  		$her_cur->Guardar();

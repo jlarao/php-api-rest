@@ -57,6 +57,24 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
     }
     //var_dump($r);
   	echo json_encode($r);
+  }elseif( isset($_GET['alumno']) ){
+    require_once 'masterInclude.inc.php';
+    require_once FOLDER_CONTROLLER. "controladorCursos.php";
+  	$cursos = new controladorCursos();
+    header("Content-Type: application/json; charset=UTF-8");
+  	$r = $cursos->obtenerCursosInstructor($_GET['alumno']);
+  	
+    if(isset($r['status']) && $r['status']=="ok"){
+  	  http_response_code(200);
+    }elseif(isset($r['status']) && $r['status']=="error"){
+  	  if(isset($r['codigo'])){
+  		http_response_code($r['codigo']);//http_response_code(401);
+  	  }else{
+  		http_response_code(401);
+  	  } 
+    }
+    //var_dump($r);
+  	echo json_encode($r);
   }
 }
 elseif($_SERVER['REQUEST_METHOD'] == "POST"){

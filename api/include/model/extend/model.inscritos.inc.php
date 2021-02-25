@@ -1,13 +1,13 @@
 <?php
 
-	require FOLDER_MODEL_BASE . "model.base.herramientas_curso.inc.php";
+	require FOLDER_MODEL_BASE . "model.base.inscritos.inc.php";
 
-	class ModeloHerramientas_curso extends ModeloBaseHerramientas_curso
+	class ModeloInscritos extends ModeloBaseInscritos
 	{
 		#------------------------------------------------------------------------------------------------------#
 		#----------------------------------------------Propiedades---------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#
-		var $_nombreClase="ModeloBaseHerramientas_curso";
+		var $_nombreClase="ModeloBaseInscritos";
 
 		var $__ss=array();
 
@@ -41,20 +41,7 @@
 		#------------------------------------------------Getter------------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#
 
-		public function getBySubTemaId($id)
-		{
-		
-			$query = " SELECT idHerramientaCurso, nombreHerramienta, urlHerramienta, formatoHerramienta, agregarVideo, nombreTipo, idTema, estatus, duracion  FROM herramientas_curso hc join tipo_herramienta th on th.idTipoHerramienta = hc.idTipoHerramienta where idTema = '" . mysqli_real_escape_string($this->dbLink, $id) . "'";
-			//return $query;
-			$arreglo = array();
-			$resultado = mysqli_query($this->dbLink, $query);
-			if ($resultado && mysqli_num_rows($resultado) > 0) {
-				while ($row_inf = mysqli_fetch_assoc($resultado)){
-					$arreglo[] = $row_inf;
-				}
-			}
-			return $arreglo;
-		}
+
 
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#

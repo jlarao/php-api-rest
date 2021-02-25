@@ -114,7 +114,8 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
         if(isset($d['urlHerramienta']) && !empty($d['urlHerramienta']) 
         		&& isset($d['agregarVideo'])        		 
         		&& isset($d['idTema']) && !empty($d['idTema'])
-        		&& isset($d['nombreHerramienta']) && !empty($d['nombreHerramienta']) ){
+        		&& isset($d['nombreHerramienta']) && !empty($d['nombreHerramienta']) 
+        		&& isset($d['duracion']) ){
       			$fecha = date('Y-m-j H:i:s');   		    	  	    	  		
     	  		
     	  		$this->setNombreHerramienta($d['nombreHerramienta']);
@@ -125,12 +126,12 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
     	  		if(!empty($d['agregarVideo'])){
 	    	  		$this->setIdTipoHerramienta(1);
 	    	  		$this->setAgregarVideo($d['agregarVideo']);  	  		    	  		 
-	    	  		$this->setFormatoHerramienta("video/mp4,video/x-m4v,video/*");
+	    	  		$this->setFormatoHerramienta($d['formatoHerramienta']);
     	  		}else{
     	  			$this->setIdTipoHerramienta(2);
     	  			$this->setFormatoHerramienta("pdf");
     	  		}
-    	  		
+    	  		$this->setDuracion($d['duracion']);
     	  		$this->setIdUsuarioRegistro($decoded->data->id);
     	  		$this->Guardar();
     	  		if($this->getError()){
@@ -176,6 +177,7 @@ catch (Exception $e){
   						$this->setUrlHerramienta($d['urlHerramienta']); 
   						$this->setAgregarVideo($d['agregarVideo']);
   						$this->setFormatoHerramienta($d['formatoHerramienta']);
+  						$this->setDuracion($d['duracion']);
   						$this->Guardar();
   						if($this->getError()){  							
   							return (array("status" => "error", "message" => $this->getStrError(), "codigo"=> "401"));

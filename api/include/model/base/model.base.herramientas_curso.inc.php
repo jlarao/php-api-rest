@@ -18,8 +18,9 @@
 		var $fechaRegistro='';
 		var $agregarVideo='';
 		var $estatus='';
+		var $duracion='';
 
-		var $__s=array("idHerramientaCurso","nombreHerramienta","idTipoHerramienta","urlHerramienta","formatoHerramienta","idTema","idUsuarioRegistro","fechaRegistro","agregarVideo","estatus");
+		var $__s=array("idHerramientaCurso","nombreHerramienta","idTipoHerramienta","urlHerramienta","formatoHerramienta","idTema","idUsuarioRegistro","fechaRegistro","agregarVideo","estatus","duracion");
 		var $__ss=array();
 
 		#------------------------------------------------------------------------------------------------------#
@@ -98,6 +99,11 @@
 		{
 			$this->estatus='Suspendido';
 		}
+		public function setDuracion($duracion)
+		{
+			
+			$this->duracion=$duracion;
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#-----------------------------------------------Unsetter-----------------------------------------------#
@@ -150,6 +156,10 @@
 		{
 			return $this->estatus;
 		}
+		public function getDuracion()
+		{
+			return $this->duracion;
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#
@@ -174,6 +184,7 @@
 			$this->fechaRegistro='';
 			$this->agregarVideo='';
 			$this->estatus='';
+			$this->duracion='';
 		}
 
 		
@@ -183,8 +194,8 @@
 		{
 			try
 			{
-				$SQL="INSERT INTO herramientas_curso(nombreHerramienta,idTipoHerramienta,urlHerramienta,formatoHerramienta,idTema,idUsuarioRegistro,fechaRegistro,agregarVideo,estatus)
-						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->idTipoHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->urlHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->formatoHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->idTema) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->agregarVideo) . "','" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "')";
+				$SQL="INSERT INTO herramientas_curso(nombreHerramienta,idTipoHerramienta,urlHerramienta,formatoHerramienta,idTema,idUsuarioRegistro,fechaRegistro,agregarVideo,estatus,duracion)
+						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->idTipoHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->urlHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->formatoHerramienta) . "','" . mysqli_real_escape_string($this->dbLink,$this->idTema) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->agregarVideo) . "','" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "','" . mysqli_real_escape_string($this->dbLink,$this->duracion) . "')";
 				$result=mysqli_query($this->dbLink,$SQL);
 				if(!$result)
 					return $this->setSystemError("Error en la insercion de registro.","[" . $SQL . "][" . mysqli_error($this->dbLink) . "][ModeloBaseHerramientas_curso::Insertar]");
@@ -204,7 +215,7 @@
 		{
 			try
 			{
-				$SQL="UPDATE herramientas_curso SET nombreHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->nombreHerramienta) . "',idTipoHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->idTipoHerramienta) . "',urlHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->urlHerramienta) . "',formatoHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->formatoHerramienta) . "',idTema='" . mysqli_real_escape_string($this->dbLink,$this->idTema) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',agregarVideo='" . mysqli_real_escape_string($this->dbLink,$this->agregarVideo) . "',estatus='" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "'
+				$SQL="UPDATE herramientas_curso SET nombreHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->nombreHerramienta) . "',idTipoHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->idTipoHerramienta) . "',urlHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->urlHerramienta) . "',formatoHerramienta='" . mysqli_real_escape_string($this->dbLink,$this->formatoHerramienta) . "',idTema='" . mysqli_real_escape_string($this->dbLink,$this->idTema) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',agregarVideo='" . mysqli_real_escape_string($this->dbLink,$this->agregarVideo) . "',estatus='" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "',duracion='" . mysqli_real_escape_string($this->dbLink,$this->duracion) . "'
 					WHERE idHerramientaCurso=" . $this->idHerramientaCurso;
 				
 				$result=mysqli_query($this->dbLink,$SQL);
@@ -246,7 +257,7 @@
 			try
 			{
 				$SQL="SELECT
-						idHerramientaCurso,nombreHerramienta,idTipoHerramienta,urlHerramienta,formatoHerramienta,idTema,idUsuarioRegistro,fechaRegistro,agregarVideo,estatus
+						idHerramientaCurso,nombreHerramienta,idTipoHerramienta,urlHerramienta,formatoHerramienta,idTema,idUsuarioRegistro,fechaRegistro,agregarVideo,estatus,duracion
 					FROM herramientas_curso
 					WHERE idHerramientaCurso=" . mysqli_real_escape_string($this->dbLink,$this->idHerramientaCurso);
 					
