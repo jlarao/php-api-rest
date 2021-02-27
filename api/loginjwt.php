@@ -38,7 +38,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             "id" => $arrSesion[1]['idUsuario'],
             "firstname" => $arrSesion[1]['nombre'],
             "lastname" => $arrSesion[1]['apellidos'],
-            "email" => $arrSesion[1]['correoElectronico']
+            "email" => $arrSesion[1]['correoElectronico'],
+        	"idRol"=> $arrSesion[1]['idRol']
         )
         );
         // set response code

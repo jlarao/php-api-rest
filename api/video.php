@@ -6,7 +6,19 @@ header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT");
 header ("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
 require_once 'masterInclude.inc.php';
+require_once FOLDER_LIB . "getid3/getid3.php";
 //require_once FOLDER_MODEL_EXTEND. "model.talogin.inc.php";
+function obtenernombre($nombre)
+{
+	$nombre=strtr($nombre,' ','-');
+	$nombre=strtr($nombre,'ñÑçÇáÁéÉíÍóÓúÚäÄëËïËöÖüÜàÀè ÈìÌòÒùÙâÂêÊîÎôÔûÛ[]´:+ºª!|"@#$%&/=?¡¿{},;*+\'\\+.',
+			'nnccaaeeiioouuaaeeieoouuaaeeiioouuaaeeiioouu ');
+	$nombre=str_replace(' ','',$nombre);
+	$nombre=str_replace('----','-',$nombre);
+	$nombre=str_replace('---','-',$nombre);
+	$nombre=str_replace('--','-',$nombre);
+	return strtolower($nombre);
+}
 
 if($_SERVER['REQUEST_METHOD'] == "GET"){  
   http_response_code(200);
@@ -18,23 +30,32 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 		$file_size = $_FILES['video']['size'];
 		if($file_size<0){			
 			echo json_encode(array("status" => "error", "message" => "Video no encontrado."));
-			http_response_code(200);
-			die();		}
+			http_response_code(400);
+			die([]);		}
 			
 	if( is_uploaded_file($_FILES["video"]["tmp_name"])){
 		$tmp_file = $_FILES["video"]["tmp_name"];
 		$video_name = $_FILES["video"]["name"];
+		$video_name = obtenernombre($video_name);
 		$uploader_dir ="./videos/".$video_name;
+		//echo $uploader_dir ;
 		$ruta = $_SERVER['REQUEST_SCHEME'] ."://". $_SERVER['SERVER_NAME'].":" .$_SERVER['SERVER_PORT'] .  "/rest/api/videos/"   .$video_name;
 	if(move_uploaded_file($tmp_file,$uploader_dir)){
-
+		$getID3 = new getID3;
+		$file = $getID3->analyze($uploader_dir);
+		/*echo("Duration: ".$file['playtime_string'].
+				" / Dimensions: ".$file['video']['resolution_x']." wide by ".$file['video']['resolution_y']." tall".
+				" / Filesize: ".$file['filesize']." bytes<br />");*/
+		if(isset($file['playtime_string']))
+			$duracion = $file['playtime_string'];//ogg no soportado // checar webm tenga duracion en vlc player, si no tiene no lo soporta
+		else $duracion="00:00";
   $datos = file_get_contents("php://input");
   require_once 'masterInclude.inc.php';
   require_once FOLDER_CONTROLLER. "controladorRegistrarUsuario.php";
   //$registrarUsuario = new controladorRegistrarUsuario();
   //$usuario  = $registrarUsuario->postRegistrarUsuario($datos);
   header("Content-Type: application/json; charset=UTF-8");
-	echo json_encode(array("status" => "ok", "message" => "Información almacenada con exito." ,"path"=>"$ruta"));
+	echo json_encode(array("status" => "ok", "message" => "Información almacenada con exito." ,"path"=>"$ruta","Duration"=>$duracion));
 		http_response_code(200);
 	}else{
 		echo json_encode(array("status" => "error", "message" => "No se pudo almacenar el video en le servidor." .$uploader_dir));
