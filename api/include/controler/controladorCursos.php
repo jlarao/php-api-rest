@@ -40,7 +40,7 @@ class controladorCursos extends ModeloCurso{
   	$curso = $this->getCurso($id);
     return $curso;
   }
-  public function obtenerCursosInstructor($instruc)
+  public function obtenerCursosInstructor($al)
   {
   	//$curso = $this->getCurso($id);
   	//return $curso;
@@ -199,6 +199,34 @@ class controladorCursos extends ModeloCurso{
   		//}
   	//}
   }
+  public function obtenerCursosAlumno($al)
+  {
+  	global $key;
+  	$headers = getallheaders();
+  	if(!isset($headers['x-auth-token']) ){
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401", "data"=>Array()));
+  
+  	}else{
+  		try {        // decode jwt
+  			global $key;
+  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
+  			if(isset($_GET['al']) && isset($_GET['al']) ){
+  				$cursos = $this->getCursosAlumnoId($decoded->data->id);
+  				return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200", "data"=>$cursos));
+  			}else{
+  				return (array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401", "data"=>Array()));
+  			}
+  		}
+  		// if decode fails, it means jwt is invalid
+  		catch (Exception $e){
+  			// set response code     //http_response_code(401);
+  			// tell the user access denied  & show error message
+  			//echo json_encode(array(        "message" => "Access denied.",        "error" => $e->getMessage()    ));
+  			return (array("status" => "error", "message" => $e->getMessage(), "codigo"=> "400", "data"=>Array()));
+  		}
+  	}
+  }
   public function postCursos($datos) {
   	$d = json_decode($datos, true);
   	//if(!isset($d['token'])){
@@ -265,6 +293,7 @@ catch (Exception $e){
       		$this->setRequisitos($d['requisitos']);
       		//$this->setIdCategoria($d['idCategoria']);
       		$this->setIdCategoria($d['idCategoria']);
+      		$this->setPrecio($d['precio']);
       		$this->Guardar();
       		if($this->getError()){
       			return json_encode(array("status" => "error", "message" => $this->getStrError()));
