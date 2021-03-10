@@ -45,13 +45,13 @@ class controladorSubtema_curso extends ModeloSubtema_curso{
   public function obtenerByCourseId($id)
   {	$headers = getallheaders();
   	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		http_response_code(401);
   	}else{
   		try {        // decode jwt
   			global $key;
-  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
 		  	$curso = $this->getByCourseId($id);
 		  	
 		  	return (array("status" => "ok", "message" => "Informacion recuperada con exito.",  "data" => $data, "codigo"=> "200"));
@@ -70,13 +70,13 @@ class controladorSubtema_curso extends ModeloSubtema_curso{
    //var_dump(($headers));
    //die(var_dump(isset($headers['x-auth-token'])));
    //
-  if(!isset($headers['x-auth-token']) && empty($headers['x-auth-token'])){
+  if(!isset($headers['X-Auth-Token']) && empty($headers['X-Auth-Token'])){
   	return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   	http_response_code(401);
   }else{
   	try {        // decode jwt
   		global $key;
-  		$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  		$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   		$subTemaCurso = $this->getByTemaCursoId($id);
   		$herramientasubTema=array();
   		$data= array();
@@ -106,13 +106,13 @@ class controladorSubtema_curso extends ModeloSubtema_curso{
    //var_dump(($headers));
    //die(var_dump(isset($headers['x-auth-token'])));
    //
-  if(!isset($headers['x-auth-token']) && empty($headers['x-auth-token'])){
+  if(!isset($headers['X-Auth-Token']) && empty($headers['X-Auth-Token'])){
   	return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   	http_response_code(401);
   }else{
   	try {        // decode jwt
   		global $key;
-  		$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  		$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   		
   		$curso  = new ModeloTema_curso();
   		$arrTemCurso = $curso->getIdsByCourseId($id);
@@ -153,13 +153,13 @@ class controladorSubtema_curso extends ModeloSubtema_curso{
   	global $key;
   	$headers = getallheaders();
   	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		//http_response_code(401);  	
   	}else{
       try {        // decode jwt
         global $key;
-        $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+        $decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
         if(isset($d['subTema']) && !empty($d['subTema']) && isset($d['agregarVideo']) && !empty($d['agregarVideo'])
         		&&	isset($d['url']) &&	!empty($d['url']) && isset($d['idTema']) && !empty($d['idTema'])
@@ -250,12 +250,12 @@ catch (Exception $e){
   	global $key;
   	$headers = getallheaders();
   	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		//http_response_code(401);  	
   	}else{
       try {        // decode jwt
-        $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+        $decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
          if(isset($d['idSubTema']) && !empty($d['idSubTema'])         		
          		&& isset($d['idTema']) && !empty($d['idTema'])
@@ -292,12 +292,12 @@ catch (Exception $e){
   		global $key;
   	$headers = getallheaders();
   	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		//http_response_code(401);  	
   	}else{
         try {        // decode jwt
-          $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+          $decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
           // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
           if(isset($_GET['idSubTema']) && !empty($_GET['idSubTema'])){
       			$fecha = date('Y-m-j H:i:s');

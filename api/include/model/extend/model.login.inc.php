@@ -114,7 +114,8 @@
 	
 	public function obtenerDatosUsuario($idUsuario)
 	{
-		$query = "Select u.idUsuario, u.nombre, u.apellidoPaterno as apellidos, t.idRol, u.correoElectronico from usuario as u 
+		$query = "Select u.idUsuario, u.nombre, u.apellidoPaterno as apellidos, t.idRol, u.correoElectronico, 
+				u.avatar from usuario as u 
                     inner join login as l on u.idUsuario=l.idUsuario 
                     inner join rol as t on l.idRol=t.idRol where u.idUsuario=". $idUsuario;
 		$arreglo = array();
@@ -139,6 +140,17 @@
 	
 	}
 
-
+	public function getLoginByIdUsuario($id)
+	{
+		$query = "SELECT idLogin FROM login WHERE idUsuario= '". mysqli_real_escape_string($this->dbLink, $id)."' and estatusLogin ='Activo' limit 1";
+		$arreglo = array();
+		$resultado = mysqli_query($this->dbLink, $query);
+		if ($resultado && mysqli_num_rows($resultado) > 0) {
+			$row_inf = mysqli_fetch_assoc($resultado);
+			$arreglo = $row_inf['idLogin'];
+		}
+		return $arreglo;
+	
+	}
 	}
 

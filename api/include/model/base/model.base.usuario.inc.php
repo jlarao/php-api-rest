@@ -18,8 +18,9 @@
 		var $telefono='';
 		var $estatus='Activo';
 		var $fechaRegistro='';
+		var $avatar='';
 
-		var $__s=array("idUsuario","nombre","apellidoPaterno","apellidoMaterno","sexo","edad","correoElectronico","telefono","estatus","fechaRegistro");
+		var $__s=array("idUsuario","nombre","apellidoPaterno","apellidoMaterno","sexo","edad","correoElectronico","telefono","estatus","fechaRegistro","avatar");
 		var $__ss=array();
 
 		#------------------------------------------------------------------------------------------------------#
@@ -106,6 +107,11 @@
 		{
 			$this->fechaRegistro=$fechaRegistro;
 		}
+		public function setAvatar($avatar)
+		{
+			
+			$this->avatar=$avatar;
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#-----------------------------------------------Unsetter-----------------------------------------------#
@@ -158,6 +164,10 @@
 		{
 			return $this->fechaRegistro;
 		}
+		public function getAvatar()
+		{
+			return $this->avatar;
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#
@@ -182,6 +192,7 @@
 			$this->telefono='';
 			$this->estatus='Activo';
 			$this->fechaRegistro='';
+			$this->avatar='';
 		}
 
 		
@@ -191,8 +202,8 @@
 		{
 			try
 			{
-				$SQL="INSERT INTO usuario(nombre,apellidoPaterno,apellidoMaterno,sexo,edad,correoElectronico,telefono,estatus,fechaRegistro)
-						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombre) . "','" . mysqli_real_escape_string($this->dbLink,$this->apellidoPaterno) . "','" . mysqli_real_escape_string($this->dbLink,$this->apellidoMaterno) . "','" . mysqli_real_escape_string($this->dbLink,$this->sexo) . "','" . mysqli_real_escape_string($this->dbLink,$this->edad) . "','" . mysqli_real_escape_string($this->dbLink,$this->correoElectronico) . "','" . mysqli_real_escape_string($this->dbLink,$this->telefono) . "','" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "')";
+				$SQL="INSERT INTO usuario(nombre,apellidoPaterno,apellidoMaterno,sexo,edad,correoElectronico,telefono,estatus,fechaRegistro,avatar)
+						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombre) . "','" . mysqli_real_escape_string($this->dbLink,$this->apellidoPaterno) . "','" . mysqli_real_escape_string($this->dbLink,$this->apellidoMaterno) . "','" . mysqli_real_escape_string($this->dbLink,$this->sexo) . "','" . mysqli_real_escape_string($this->dbLink,$this->edad) . "','" . mysqli_real_escape_string($this->dbLink,$this->correoElectronico) . "','" . mysqli_real_escape_string($this->dbLink,$this->telefono) . "','" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->avatar) . "')";
 				$result=mysqli_query($this->dbLink,$SQL);
 				if(!$result)
 					return $this->setSystemError("Error en la insercion de registro.","[" . $SQL . "][" . mysqli_error($this->dbLink) . "][ModeloBaseUsuario::Insertar]");
@@ -212,7 +223,7 @@
 		{
 			try
 			{
-				$SQL="UPDATE usuario SET nombre='" . mysqli_real_escape_string($this->dbLink,$this->nombre) . "',apellidoPaterno='" . mysqli_real_escape_string($this->dbLink,$this->apellidoPaterno) . "',apellidoMaterno='" . mysqli_real_escape_string($this->dbLink,$this->apellidoMaterno) . "',sexo='" . mysqli_real_escape_string($this->dbLink,$this->sexo) . "',edad='" . mysqli_real_escape_string($this->dbLink,$this->edad) . "',correoElectronico='" . mysqli_real_escape_string($this->dbLink,$this->correoElectronico) . "',telefono='" . mysqli_real_escape_string($this->dbLink,$this->telefono) . "',estatus='" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "'
+				$SQL="UPDATE usuario SET nombre='" . mysqli_real_escape_string($this->dbLink,$this->nombre) . "',apellidoPaterno='" . mysqli_real_escape_string($this->dbLink,$this->apellidoPaterno) . "',apellidoMaterno='" . mysqli_real_escape_string($this->dbLink,$this->apellidoMaterno) . "',sexo='" . mysqli_real_escape_string($this->dbLink,$this->sexo) . "',edad='" . mysqli_real_escape_string($this->dbLink,$this->edad) . "',correoElectronico='" . mysqli_real_escape_string($this->dbLink,$this->correoElectronico) . "',telefono='" . mysqli_real_escape_string($this->dbLink,$this->telefono) . "',estatus='" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',avatar='" . mysqli_real_escape_string($this->dbLink,$this->avatar) . "'
 					WHERE idUsuario=" . $this->idUsuario;
 				
 				$result=mysqli_query($this->dbLink,$SQL);
@@ -254,7 +265,7 @@
 			try
 			{
 				$SQL="SELECT
-						idUsuario,nombre,apellidoPaterno,apellidoMaterno,sexo,edad,correoElectronico,telefono,estatus,fechaRegistro
+						idUsuario,nombre,apellidoPaterno,apellidoMaterno,sexo,edad,correoElectronico,telefono,estatus,fechaRegistro,avatar
 					FROM usuario
 					WHERE idUsuario=" . mysqli_real_escape_string($this->dbLink,$this->idUsuario);
 					

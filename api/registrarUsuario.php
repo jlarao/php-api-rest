@@ -1,7 +1,7 @@
 <?php
 header ("Access-Control-Allow-Origin: *");
 header ("Access-Control-Expose-Headers: Content-Length, X-JSON");
-header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
+header ("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE");
 Header ("Access-Control-Allow-Headers:append,delete,entries,foreach,get,has,keys,set,values,Authorization");
 //header ("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');

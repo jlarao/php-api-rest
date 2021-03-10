@@ -111,7 +111,20 @@ if(is_file(FOLDER_INCLUDE . "controler/" . $__FILE_NAME__ . ".inc.php")){
       if (in_array($__FILE_NAME__,$_SESSION['menus']))
           header("Location: login.php");
   }*/
-
+      if (!function_exists('getallheaders')) {
+      	function getallheaders() {
+      
+      		$headers = [];
+      		foreach($_SERVER as $name => $value) {
+      			if($name != 'HTTP_MOD_REWRITE' && (substr($name, 0, 5) == 'HTTP_' || $name == 'CONTENT_LENGTH' || $name == 'CONTENT_TYPE')) {
+      				$name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', str_replace('HTTP_', '', $name)))));
+      				if($name == 'Content-Type') $name = 'Content-type';
+      				$headers[$name] = $value;
+      			}
+      		}
+      		return ($headers);
+      	}
+      }
 $_NOW_=date("Y-m-d H:i:s");
 $key = "XAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9";
 ?>

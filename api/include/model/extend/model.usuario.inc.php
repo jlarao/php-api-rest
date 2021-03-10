@@ -73,6 +73,23 @@
 			return $arreglo;
 		}
 		
+		public function getInstructor($id)
+		{
+				
+			$query = "select idUsuario,nombre,apellidoPaterno,apellidoMaterno, correoElectronico,telefono,estatus,fechaRegistro , avatar, sexo
+					FROM usuario
+					where idUsuario = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
+					";
+			$arreglo = array();
+			$resultado = mysqli_query($this->dbLink, $query);
+			if ($resultado && mysqli_num_rows($resultado) > 0) {
+				while ($row_inf = mysqli_fetch_assoc($resultado)){
+					$arreglo = $row_inf;
+				}
+			}
+			return $arreglo;
+		}
+		
 		public function getUsuarios($pagina,$tamano)
 		{	
 			$inicial = (($pagina) * $tamano);

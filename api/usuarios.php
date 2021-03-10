@@ -21,6 +21,22 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
   	echo json_encode($usuarios->obtenerUsuario($_GET['id']));
     http_response_code(200);
     //echo "get";
+  }elseif( isset($_GET['instructor']) ){
+    require_once 'masterInclude.inc.php';
+    require_once FOLDER_CONTROLLER. "controladorUsuarios.php";
+  	$usuarios = new controladorUsuarios();
+    header("Content-Type: application/json; charset=UTF-8");
+  	$usuario = $usuarios->obtenerInstructor($_GET['instructor']);
+  	if(isset($usuario['status'])=="ok"){
+  		http_response_code(200);
+  	}if(isset($usuario['status'])=="error"){
+  		if(isset($usuario['codigo'])){
+  			http_response_code($usuario['codigo']);//http_response_code(401);
+  		}
+  	}else{
+  		http_response_code(200);
+  	}
+  	echo json_encode($usuario);
   }
 }
 elseif($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -54,7 +70,7 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 	}else{
 		http_response_code(200);
 	}
-	echo $usuario;
+	echo json_encode($usuario);
 }elseif($_SERVER['REQUEST_METHOD'] == "DELETE"){
   //echo "delete";
 	$datos = file_get_contents("php://input");

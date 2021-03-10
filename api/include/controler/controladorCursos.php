@@ -47,13 +47,13 @@ class controladorCursos extends ModeloCurso{
   	global $key;
   	$headers = getallheaders();
   	 //die(var_dump($headers));
-  	if(!isset($headers['x-auth-token']) ){
+  	if(!isset($headers['X-Auth-Token']) ){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401", "data"=>Array()));
   		
   	}else{
   		try {        // decode jwt
   			global $key;
-  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
   			if(isset($_GET['instruc']) && isset($_GET['instruc']) ){
   				$cursos = $this->getCursosInstructorId($decoded->data->id);
@@ -79,13 +79,13 @@ class controladorCursos extends ModeloCurso{
   	global $key;
   	$headers = getallheaders();
   	//die(var_dump($headers));
-  	if(!isset($headers['x-auth-token']) ){
+  	if(!isset($headers['X-Auth-Token']) ){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401", "data"=>Array()));
   
   	}else{
   		try {        // decode jwt
   			global $key;
-  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
   			if(isset($_GET['idRep']) && isset($_GET['idRep']) ){
   				//curso
@@ -203,13 +203,13 @@ class controladorCursos extends ModeloCurso{
   {
   	global $key;
   	$headers = getallheaders();
-  	if(!isset($headers['x-auth-token']) ){
+  	if(!isset($headers['X-Auth-Token']) ){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401", "data"=>Array()));
   
   	}else{
   		try {        // decode jwt
   			global $key;
-  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
   			if(isset($_GET['al']) && isset($_GET['al']) ){
   				$cursos = $this->getCursosAlumnoId($decoded->data->id);
@@ -234,13 +234,13 @@ class controladorCursos extends ModeloCurso{
   	global $key;
   	$headers = getallheaders();
   	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		http_response_code(401);  	
   	}else{
       try {        // decode jwt
         global $key;
-        $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+        $decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
         if(isset($d['nombre']) && isset($d['categoria']) ){
       		$fecha = date('Y-m-j H:i:s');
@@ -274,12 +274,12 @@ catch (Exception $e){
   	global $key;
   	$headers = getallheaders();
   	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		http_response_code(401);  	
   	}else{
       try {        // decode jwt
-        $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+        $decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
         if(isset($d['idCurso']) && !empty($d['idCurso']) && isset($d['nombreCurso']) && !empty($d['nombreCurso'])
         		&& isset($d['que_aprenderas']) && !empty($d['que_aprenderas']) && isset($d['requisitos']) && !empty($d['requisitos'])

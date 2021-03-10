@@ -65,7 +65,7 @@ class controladorRegistrarUsuario extends ModeloUsuario{
     	  		$login = new ModeloLogin();
     	  		$login->setIdUsuario($this->getIdUsuario());
     	  		$login->setUserName($d['email']);
-    	  		$login->setIdRol(2);
+    	  		$login->setIdRol(3);//alumno
     	  		$login->setSemilla($random_salt);
     	  		$login->setPassword($passwordSalt);
     	  		$login->setEstatusLoginActivo();

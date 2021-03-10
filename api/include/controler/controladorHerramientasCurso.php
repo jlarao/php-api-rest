@@ -43,13 +43,13 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
   public function obtenerByCourseId($id)
   {	$headers = getallheaders();
   	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		http_response_code(401);
   	}else{
   		try {        // decode jwt
   			global $key;
-  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
 		  	$curso = $this->getByCourseId($id);
 		  	
 		  	return (array("status" => "ok", "message" => "Informacion recuperada con exito.",  "data" => $data, "codigo"=> "200"));
@@ -68,13 +68,13 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
    //var_dump(($headers));
    //die(var_dump(isset($headers['x-auth-token'])));
    //
-  if(!isset($headers['x-auth-token']) && empty($headers['x-auth-token'])){
+  if(!isset($headers['X-Auth-Token']) && empty($headers['X-Auth-Token'])){
   	return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   	http_response_code(401);
   }else{
   	try {        // decode jwt
   		global $key;
-  		$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  		$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   		$subTemaCurso = $this->getByTemaCursoId($id);
   		$herramientasubTema=array();
   		$data= array();
@@ -103,13 +103,13 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
   	$d = json_decode($datos, true);  	
   	global $key;
   	$headers = getallheaders();  	
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		//http_response_code(401);  	
   	}else{
       try {        // decode jwt
         global $key;
-        $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+        $decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
         if(isset($d['urlHerramienta']) && !empty($d['urlHerramienta']) 
         		&& isset($d['agregarVideo'])        		 
@@ -162,13 +162,13 @@ catch (Exception $e){
   	global $key;
   	$headers = getallheaders();
   	 
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		//http_response_code(401);
   	}else{
   		try {        // decode jwt
   			global $key;
-  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
   			if(isset($d['idHerramientaCurso']) && !empty($d['idHerramientaCurso']) &&	isset($d['agregarVideo']) && !empty($d['agregarVideo']) 
   					&&	isset($d['urlHerramienta']) && !empty($d['urlHerramienta']) ){
@@ -219,12 +219,12 @@ catch (Exception $e){
   		global $key;
   		$headers = getallheaders();
   	 	//die(var_dump($_GET));
-  		if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  		if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   			return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		//http_response_code(401);
   		}else{
         try {        // decode jwt
-          $decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+          $decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
           // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
           if(isset($_GET['idHerramientaCurso']) && !empty($_GET['idHerramientaCurso']) 
           		&& isset($_GET['estatus']) && !empty($_GET['estatus'])){

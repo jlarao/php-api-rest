@@ -43,13 +43,13 @@ class controladorCategoria_curso extends ModeloCategoria_curso{
   	global $key;
   	$headers = getallheaders();
   	 
-  	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
   		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		http_response_code(401);
   	}else{
   		try {        // decode jwt
   			global $key;
-  			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
   			if(isset($d['nombre'])){
   				$fecha = date('Y-m-j H:i:s');

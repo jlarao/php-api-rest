@@ -39,7 +39,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             "firstname" => $arrSesion[1]['nombre'],
             "lastname" => $arrSesion[1]['apellidos'],
             "email" => $arrSesion[1]['correoElectronico'],
-        	"idRol"=> $arrSesion[1]['idRol']
+        	"idRol"=> $arrSesion[1]['idRol'],
+        		"avatar"=>$arrSesion[1]['avatar']
         )
         );
         // set response code
@@ -71,14 +72,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	global $key;
 	$headers = getallheaders();
 	
-	if(!isset($headers['x-auth-token']) && !empty($headers['x-auth-token'])){
+	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
 		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
 		http_response_code(401);
 	}else{
 		try {        // decode jwt// $decoded->data->id			
-			$decoded = JWT::decode($headers['x-auth-token'], $key, array('HS256'));
+			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
 			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/			
-				echo  json_encode(array("status" => "ok", "message" => "Procesada correctamente", "codigo"=> "200",  "token" => $headers['x-auth-token'],"usuario"=> $decoded->data));
+				echo  json_encode(array("status" => "ok", "message" => "Procesada correctamente" , "codigo"=> "200",  "token" => $headers['x-auth-token'],"usuario"=> $decoded->data));
 				http_response_code(200);
 			}
 		// if decode fails, it means jwt is invalid
