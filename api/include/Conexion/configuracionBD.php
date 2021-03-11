@@ -5,10 +5,10 @@
 
 if (! DEVELOPER) {
     /* variables de la BD */
-    define("BD_HOST", "localhost");
-    define("BD_USER", "user_linarte");
-    define("BD_PASS", "cn@E8sMp89i?2");
-    define("BD_DB", "bd_linarte");
+    define("BD_HOST", "sql101.mipropia.com");
+    define("BD_USER", "mipc_28108662");
+    define("BD_PASS", "Laoj81082");
+    define("BD_DB", "mipc_28108662_elearning");
     define("BD_CHARSET", "utf8");
 } else {
     

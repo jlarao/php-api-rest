@@ -1,13 +1,13 @@
 <?php
 
-	require FOLDER_MODEL_BASE . "model.base.expositor.inc.php";
+	require FOLDER_MODEL_BASE . "model.base.profesion_expositor.inc.php";
 
-	class ModeloExpositor extends ModeloBaseExpositor
+	class ModeloProfesion_expositor extends ModeloBaseProfesion_expositor
 	{
 		#------------------------------------------------------------------------------------------------------#
 		#----------------------------------------------Propiedades---------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#
-		var $_nombreClase="ModeloBaseExpositor";
+		var $_nombreClase="ModeloBaseProfesion_expositor";
 
 		var $__ss=array();
 
@@ -42,25 +42,7 @@
 		#------------------------------------------------------------------------------------------------------#
 
 
-		public function getExpositor($id)
-		{
-		
-			$query = "select idExpositor , idProfesion, descripcion 
-					FROM expositor
-					where idUsuarioExpositor = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
-					";
-			$arreglo = array();
-			$resultado = mysqli_query($this->dbLink, $query);
-			if ($resultado && mysqli_num_rows($resultado) > 0) {
-				while ($row_inf = mysqli_fetch_assoc($resultado)){
-					$arreglo = $row_inf;
-				}
-				return $arreglo;
-			}else{
-				return array("idExpositor" =>"" , "idProfesion" =>"", "descripcion"  =>"");
-			}
-			
-		}
+
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#
 		#------------------------------------------------------------------------------------------------------#

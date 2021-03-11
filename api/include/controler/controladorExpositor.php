@@ -1,5 +1,5 @@
 <?php
-require_once FOLDER_MODEL_EXTEND. "model.usuario.inc.php";
+require_once FOLDER_MODEL_EXTEND. "model.expositor.inc.php";
 require_once FOLDER_MODEL_EXTEND. "model.login.inc.php";
 require_once FOLDER_MODEL_EXTEND. "model.expositor.inc.php";
 include_once 'php-jwt-master/src/BeforeValidException.php';
@@ -12,7 +12,7 @@ use \Firebase\JWT\JWT;
 
 error_reporting(E_ALL);
 
-class controladorUsuarios extends ModeloUsuario{
+class controladorExpositor extends ModeloExpositor{
   #------------------------------------------------------------------------------------------------------#
   #--------------------------------------------Inicializacion--------------------------------------------#
   #------------------------------------------------------------------------------------------------------#
@@ -28,9 +28,9 @@ class controladorUsuarios extends ModeloUsuario{
 
   }
 
-  public function obtenerUsuarios($pagina,$tamano)
+  public function obtenerProfesiones($pagina,$tamano)
   {
-    $usuarios = $this->getUsuarios($pagina,$tamano);
+    $usuarios = $this->getProfesionesExpositor();
     return $usuarios;
   }
 
@@ -53,7 +53,7 @@ class controladorUsuarios extends ModeloUsuario{
   			global $key;
   			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-  			if(isset($_GET['instructor']) && isset($_GET['instructor']) ){
+  			if(isset($_GET['instructor']) && !empty($_GET['instructor']) ){
   				//$cursos = $this->getCursosInstructorId($decoded->data->id);
   				$usuario = $this->getInstructor($id);
   				$m_exp = new ModeloExpositor();
@@ -76,31 +76,34 @@ class controladorUsuarios extends ModeloUsuario{
   	//return $usuario;
   }
 
-  public function postUsuario($datos) {
+  public function postExpositor($datos) {
   	$d = json_decode($datos, true);
-  	if(!isset($d['token'])){
-  		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  	$headers = getallheaders();
+  	if(!isset($headers['X-Auth-Token']) ){
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401", "data"=>Array()));
+  	
   	}else{
-      try {        // decode jwt
-        global $key;
-        $decoded = JWT::decode($d['token'], $key, array('HS256'));
+  		try {        // decode jwt
+  			global $key;
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));   // decode jwt        
         // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-        if(isset($d['nombre']) && isset($d['apellidos'])){
+        if(isset($d['idProfesion']) && !empty($d['idProfesion']) &&
+        		isset($d['descripcion']) && !empty($d['descripcion']) &&
+        		isset($d['idUsuarioExpositor']) && !empty($d['idUsuarioExpositor'])){
       		$fecha = date('Y-m-j H:i:s');
-    	  	$this->setFcnombre($d['nombre']);
-    	  	$this->setFcapellidos($d['apellidos']);
-    	  	$this->setFccorreo($d['correo']);
-    	  	$this->setFctelefono($d['telefono']);
-    	  	$this->setFcestatusActivo();
-    	  	$this->setFdfecha_registro($fecha);
+    	  	$this->setIdProfesion($d['idProfesion']);
+    	  	$this->setIdUsuarioExpositor($d['idUsuarioExpositor']);
+    	  	$this->setDescripcion($d['descripcion']);    	  	
+    	  	$this->setFechaRegistro($fecha);
+    	  	$this->setIdUsuarioRegistro($decoded->data->id);
     	  	$this->Guardar();
     	  	if($this->getError()){
-    	  		return json_encode(array("status" => "error", "message" => $this->getStrError()));
+    	  		return (array("status" => "error", "message" => $this->getStrError()));
     	  	}else{
-    	  		return json_encode(array("status" => "ok", "message" => "Informacion almacenada con exito."));;
+    	  		return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "data"=> $this->getIdExpositor()));;
     	  	}
       	}else{
-      		return json_encode(array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401"));
+      		return (array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401"));
     	}
     }
     // if decode fails, it means jwt is invalid

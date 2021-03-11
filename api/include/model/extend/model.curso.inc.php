@@ -59,8 +59,13 @@
 		public function getCurso($id)
 		{
 				
-			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, apellidoMaterno, avatar, descripcion, requisitos, que_aprenderas, idCategoria, precio  
-			FROM curso c left join usuario u on u.idUsuario = c.idUsuarioRegistro
+			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, 
+					apellidoMaterno, avatar, c.descripcion as descripcion , requisitos, que_aprenderas, idCategoria, precio , e.descripcion as expositor 
+					, nombreProfesion
+			FROM curso c 
+					left join usuario u on u.idUsuario = c.idUsuarioRegistro
+					left join expositor e on e.idUsuarioExpositor = c.idUsuarioRegistro
+					left join profesion_expositor pe on pe.idProfesion = e.idProfesion
 					where idCurso = '" . mysqli_real_escape_string($this->dbLink, $id) . "'
 					";
 			$arreglo = array(); 

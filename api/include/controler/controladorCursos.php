@@ -99,6 +99,7 @@ class controladorCursos extends ModeloCurso{
   				$arrTemCurso = $curso->getIdsByCourseId($id);//id curso
   				//die(print_r($arrTemCurso));
   				$data= array();
+  				$subtemas = array();
   				for($j=0; $j<count($arrTemCurso); $j++){
   					$subTemaCursoM = new ModeloSubtema_curso();
   					$subTemaCurso = $subTemaCursoM->getByTemaCursoId($arrTemCurso[$j]['idTema']);
@@ -162,6 +163,7 @@ class controladorCursos extends ModeloCurso{
   				$arrTemCurso = $curso->getIdsByCourseId($id);//id curso
   				//die(print_r($arrTemCurso));
   				$data= array();
+  				$subtemas = array();
   				for($j=0; $j<count($arrTemCurso); $j++){
   					$subTemaCursoM = new ModeloSubtema_curso();
   					$subTemaCurso = $subTemaCursoM->getByTemaCursoId($arrTemCurso[$j]['idTema']);
