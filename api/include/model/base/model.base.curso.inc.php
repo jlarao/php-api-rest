@@ -22,8 +22,9 @@
 		var $requisitos='';
 		var $que_aprenderas='';
 		var $precio='';
+		var $estatus='';
 
-		var $__s=array("idCurso","nombreCurso","idCategoria","duracion","numeroTemas","fechaInicio","fechaFin","fechaRegistro","idUsuarioRegistro","poster","descripcion","requisitos","que_aprenderas","precio");
+		var $__s=array("idCurso","nombreCurso","idCategoria","duracion","numeroTemas","fechaInicio","fechaFin","fechaRegistro","idUsuarioRegistro","poster","descripcion","requisitos","que_aprenderas","precio","estatus");
 		var $__ss=array();
 
 		#------------------------------------------------------------------------------------------------------#
@@ -108,6 +109,19 @@
 		{
 			$this->precio=$precio;
 		}
+		public function setEstatus($estatus)
+		{
+			
+			$this->estatus=$estatus;
+		}
+		public function setEstatusActivo()
+		{
+			$this->estatus='Activo';
+		}
+		public function setEstatusSuspendido()
+		{
+			$this->estatus='Suspendido';
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#-----------------------------------------------Unsetter-----------------------------------------------#
@@ -176,6 +190,10 @@
 		{
 			return $this->precio;
 		}
+		public function getEstatus()
+		{
+			return $this->estatus;
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#
@@ -204,6 +222,7 @@
 			$this->requisitos='';
 			$this->que_aprenderas='';
 			$this->precio='';
+			$this->estatus='';
 		}
 
 		
@@ -213,8 +232,8 @@
 		{
 			try
 			{
-				$SQL="INSERT INTO curso(nombreCurso,idCategoria,duracion,numeroTemas,fechaInicio,fechaFin,fechaRegistro,idUsuarioRegistro,poster,descripcion,requisitos,que_aprenderas,precio)
-						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreCurso) . "','" . mysqli_real_escape_string($this->dbLink,$this->idCategoria) . "','" . mysqli_real_escape_string($this->dbLink,$this->duracion) . "','" . mysqli_real_escape_string($this->dbLink,$this->numeroTemas) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaInicio) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaFin) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->poster) . "','" . mysqli_real_escape_string($this->dbLink,$this->descripcion) . "','" . mysqli_real_escape_string($this->dbLink,$this->requisitos) . "','" . mysqli_real_escape_string($this->dbLink,$this->que_aprenderas) . "','" . mysqli_real_escape_string($this->dbLink,$this->precio) . "')";
+				$SQL="INSERT INTO curso(nombreCurso,idCategoria,duracion,numeroTemas,fechaInicio,fechaFin,fechaRegistro,idUsuarioRegistro,poster,descripcion,requisitos,que_aprenderas,precio,estatus)
+						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreCurso) . "','" . mysqli_real_escape_string($this->dbLink,$this->idCategoria) . "','" . mysqli_real_escape_string($this->dbLink,$this->duracion) . "','" . mysqli_real_escape_string($this->dbLink,$this->numeroTemas) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaInicio) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaFin) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->poster) . "','" . mysqli_real_escape_string($this->dbLink,$this->descripcion) . "','" . mysqli_real_escape_string($this->dbLink,$this->requisitos) . "','" . mysqli_real_escape_string($this->dbLink,$this->que_aprenderas) . "','" . mysqli_real_escape_string($this->dbLink,$this->precio) . "','" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "')";
 				$result=mysqli_query($this->dbLink,$SQL);
 				if(!$result)
 					return $this->setSystemError("Error en la insercion de registro.","[" . $SQL . "][" . mysqli_error($this->dbLink) . "][ModeloBaseCurso::Insertar]");
@@ -234,7 +253,7 @@
 		{
 			try
 			{
-				$SQL="UPDATE curso SET nombreCurso='" . mysqli_real_escape_string($this->dbLink,$this->nombreCurso) . "',idCategoria='" . mysqli_real_escape_string($this->dbLink,$this->idCategoria) . "',duracion='" . mysqli_real_escape_string($this->dbLink,$this->duracion) . "',numeroTemas='" . mysqli_real_escape_string($this->dbLink,$this->numeroTemas) . "',fechaInicio='" . mysqli_real_escape_string($this->dbLink,$this->fechaInicio) . "',fechaFin='" . mysqli_real_escape_string($this->dbLink,$this->fechaFin) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "',poster='" . mysqli_real_escape_string($this->dbLink,$this->poster) . "',descripcion='" . mysqli_real_escape_string($this->dbLink,$this->descripcion) . "',requisitos='" . mysqli_real_escape_string($this->dbLink,$this->requisitos) . "',que_aprenderas='" . mysqli_real_escape_string($this->dbLink,$this->que_aprenderas) . "',precio='" . mysqli_real_escape_string($this->dbLink,$this->precio) . "'
+				$SQL="UPDATE curso SET nombreCurso='" . mysqli_real_escape_string($this->dbLink,$this->nombreCurso) . "',idCategoria='" . mysqli_real_escape_string($this->dbLink,$this->idCategoria) . "',duracion='" . mysqli_real_escape_string($this->dbLink,$this->duracion) . "',numeroTemas='" . mysqli_real_escape_string($this->dbLink,$this->numeroTemas) . "',fechaInicio='" . mysqli_real_escape_string($this->dbLink,$this->fechaInicio) . "',fechaFin='" . mysqli_real_escape_string($this->dbLink,$this->fechaFin) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "',poster='" . mysqli_real_escape_string($this->dbLink,$this->poster) . "',descripcion='" . mysqli_real_escape_string($this->dbLink,$this->descripcion) . "',requisitos='" . mysqli_real_escape_string($this->dbLink,$this->requisitos) . "',que_aprenderas='" . mysqli_real_escape_string($this->dbLink,$this->que_aprenderas) . "',precio='" . mysqli_real_escape_string($this->dbLink,$this->precio) . "',estatus='" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "'
 					WHERE idCurso=" . $this->idCurso;
 				
 				$result=mysqli_query($this->dbLink,$SQL);
@@ -276,7 +295,7 @@
 			try
 			{
 				$SQL="SELECT
-						idCurso,nombreCurso,idCategoria,duracion,numeroTemas,fechaInicio,fechaFin,fechaRegistro,idUsuarioRegistro,poster,descripcion,requisitos,que_aprenderas,precio
+						idCurso,nombreCurso,idCategoria,duracion,numeroTemas,fechaInicio,fechaFin,fechaRegistro,idUsuarioRegistro,poster,descripcion,requisitos,que_aprenderas,precio,estatus
 					FROM curso
 					WHERE idCurso=" . mysqli_real_escape_string($this->dbLink,$this->idCurso);
 					

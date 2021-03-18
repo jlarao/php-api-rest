@@ -8,14 +8,14 @@ if (! DEVELOPER) {
     /**
      * constantes de producci�n
      */
-    define("FOLDER_INCLUDE", $_SERVER['DOCUMENT_ROOT'] . "/include/");
+    define("FOLDER_INCLUDE", $_SERVER['DOCUMENT_ROOT'] . "/api/include/");
 
-    define("FOLDER_HTDOCS", $_SERVER['DOCUMENT_ROOT'] . "/");
+    define("FOLDER_HTDOCS", $_SERVER['DOCUMENT_ROOT'] . "/api/");
 
     define("ERR_DEBUG", false);
     define("SESSION_TIME", 1800);
     define("SOPORTE_TIME", 600);
-
+	$ruta_api = "/api/";
   } else {
     /**
      * constantes de desarrollo
@@ -24,7 +24,7 @@ if (! DEVELOPER) {
     define("FOLDER_INCLUDE", $_SERVER['DOCUMENT_ROOT'] . "/rest/api/include/");
 
     define("FOLDER_HTDOCS", $_SERVER['DOCUMENT_ROOT'] . "/rest/api/");
-
+    $ruta_api = "/rest/api/";
     define("ERR_DEBUG", true);
   }
 

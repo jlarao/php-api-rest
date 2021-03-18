@@ -7,7 +7,7 @@ header ("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
 require_once 'masterInclude.inc.php';
 //require_once FOLDER_MODEL_EXTEND. "model.talogin.inc.php";
-
+global $ruta_api;
 if($_SERVER['REQUEST_METHOD'] == "GET"){  
   http_response_code(200);
   header("Content-Type: application/json; charset=UTF-8");
@@ -26,7 +26,8 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 		$tmp_file = $_FILES["imagen"]["tmp_name"];
 		$video_name = $_FILES["imagen"]["name"];
 		$uploader_dir ="./imagenes/".$video_name;
-		$ruta = $_SERVER['REQUEST_SCHEME'] ."://". $_SERVER['SERVER_NAME'].":" .$_SERVER['SERVER_PORT'] .  "/rest/api/imagenes/"   .$video_name;
+		//$ruta = $_SERVER['REQUEST_SCHEME'] ."://". $_SERVER['SERVER_NAME'].":" .$_SERVER['SERVER_PORT'] .  "/api/imagenes/"   .$video_name;
+		$ruta = $_SERVER['REQUEST_SCHEME'] ."://". $_SERVER['SERVER_NAME'].":" .$_SERVER['SERVER_PORT'] . $ruta_api ."imagenes/"   .$video_name;
 	if(move_uploaded_file($tmp_file,$uploader_dir)){
 
   $datos = file_get_contents("php://input");

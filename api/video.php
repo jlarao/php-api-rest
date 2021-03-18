@@ -20,16 +20,27 @@ function obtenernombre($nombre)
 	return strtolower($nombre);
 }
 
-if($_SERVER['REQUEST_METHOD'] == "GET"){  
+if($_SERVER['REQUEST_METHOD'] == "GET"){
+	if( isset($_GET['maxFile']) ){
+		$max_upload = (int)(ini_get('upload_max_filesize'));
+		$max_post = (int)(ini_get('post_max_size'));
+		$memory_limit = (int)(ini_get('memory_limit'));
+		$upload_mb = min($max_upload, $max_post, $memory_limit);
+		
+		http_response_code(200);
+		echo json_encode($upload_mb);
+	}
+	else{
   http_response_code(200);
   header("Content-Type: application/json; charset=UTF-8");
   echo json_encode(array());
+	}
 }
 elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 	if(isset($_FILES["video"] )){		
 		$file_size = $_FILES['video']['size'];
 		if($file_size<0){			
-			echo json_encode(array("status" => "error", "message" => "Video no encontrado."));
+			echo json_encode(array("status" => "error", "message" => "Video no encontrado tamaño .", "data"=>$file_size));
 			http_response_code(400);
 			die([]);		}
 			
@@ -66,7 +77,7 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 		http_response_code(200);
 	}
 	}else{
-		echo json_encode(array("status" => "error", "message" => "Video no encontrado."));
+		echo json_encode(array("status" => "error", "message" => "Video no encontrado.","data"=>$_FILES));
 		http_response_code(200);
 	}
   //echo $usuario;

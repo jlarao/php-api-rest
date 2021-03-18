@@ -115,7 +115,8 @@ class controladorHerramientas_curso extends ModeloHerramientas_curso{
         		&& isset($d['agregarVideo'])        		 
         		&& isset($d['idTema']) && !empty($d['idTema'])
         		&& isset($d['nombreHerramienta']) && !empty($d['nombreHerramienta']) 
-        		&& isset($d['duracion']) ){
+        		//&& isset($d['duracion']) )
+        ){
       			$fecha = date('Y-m-j H:i:s');   		    	  	    	  		
     	  		
     	  		$this->setNombreHerramienta($d['nombreHerramienta']);
@@ -170,7 +171,8 @@ catch (Exception $e){
   			global $key;
   			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-  			if(isset($d['idHerramientaCurso']) && !empty($d['idHerramientaCurso']) &&	isset($d['agregarVideo']) && !empty($d['agregarVideo']) 
+  			if(isset($d['idHerramientaCurso']) && !empty($d['idHerramientaCurso']) &&	
+  					isset($d['agregarVideo'])  
   					&&	isset($d['urlHerramienta']) && !empty($d['urlHerramienta']) ){
   						$fecha = date('Y-m-j H:i:s');
   						$this->setIdHerramientaCurso($d['idHerramientaCurso']);  						

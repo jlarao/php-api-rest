@@ -32,7 +32,7 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 		$tmp_file = $_FILES["pdf"]["tmp_name"];
 		$video_name = $_FILES["pdf"]["name"];
 		$uploader_dir ="./pdfs/".$video_name;
-		$ruta = $_SERVER['REQUEST_SCHEME'] ."://". $_SERVER['SERVER_NAME'].":" .$_SERVER['SERVER_PORT'] .  "/rest/api/pdfs/"   .$video_name;
+		$ruta = $_SERVER['REQUEST_SCHEME'] ."://". $_SERVER['SERVER_NAME'].":" .$_SERVER['SERVER_PORT'] .  "/api/pdfs/"   .$video_name;
 	if(move_uploaded_file($tmp_file,$uploader_dir)){
 
   $datos = file_get_contents("php://input");

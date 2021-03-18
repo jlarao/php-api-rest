@@ -60,7 +60,7 @@
 		{
 				
 			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, 
-					apellidoMaterno, avatar, c.descripcion as descripcion , requisitos, que_aprenderas, idCategoria, precio , e.descripcion as expositor 
+					apellidoMaterno, avatar, c.descripcion as descripcion , requisitos, que_aprenderas, idCategoria, precio , e.descripcion as expositor, c.estatus 
 					, nombreProfesion
 			FROM curso c 
 					left join usuario u on u.idUsuario = c.idUsuarioRegistro
@@ -83,6 +83,7 @@
 			$inicial = (($pagina) * $tamano);
 			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, apellidoMaterno  , avatar, descripcion, requisitos, que_aprenderas 
 			FROM curso c left join usuario u on u.idUsuario = c.idUsuarioRegistro
+			where c.estatus = 'Activo'
 			LIMIT $inicial, $tamano
 			";
 			$arreglo = array();
@@ -98,7 +99,7 @@
 		public function getCursosInstructorId($id)
 		{
 		
-			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, apellidoMaterno, avatar, descripcion, requisitos, que_aprenderas 
+			$query = "SELECT idCurso, nombreCurso,  duracion , fechaInicio, fechaFin, c.fechaRegistro, poster, idUsuario, nombre, apellidoPaterno, apellidoMaterno, avatar, descripcion, requisitos, que_aprenderas, c.estatus 
 			FROM curso c left join usuario u on u.idUsuario = c.idUsuarioRegistro
 					where idUsuarioRegistro = '" . mysqli_real_escape_string($this->dbLink, $id) . "' LIMIT 0,5
 					";

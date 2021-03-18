@@ -250,7 +250,8 @@ class controladorCursos extends ModeloCurso{
     	  	$this->setPoster($d['poster']);
     	  	$this->setIdCategoria($d['categoria']);
     	  	$this->setIdUsuarioRegistro($decoded->data->id);
-    	  	$this->setFechaRegistro($fecha);    	  	
+    	  	$this->setFechaRegistro($fecha); 
+    	  	$this->setEstatusSuspendido();
     	  	$this->Guardar();
     	  	if($this->getError()){
     	  		return json_encode(array("status" => "error", "message" => $this->getStrError()));
@@ -296,6 +297,15 @@ catch (Exception $e){
       		//$this->setIdCategoria($d['idCategoria']);
       		$this->setIdCategoria($d['idCategoria']);
       		$this->setPrecio($d['precio']);
+      		if (isset($d['estatus']) && !empty($d['estatus']))
+      			$this->setEstatus($d['estatus']);
+      		
+      			if (isset($d['horas']) && !empty($d['horas'])
+      					&& isset($d['minutos']) && !empty($d['minutos'])
+      					&& isset($d['segundos']) && !empty($d['segundos'])){
+      						$this->setDuracion($d['horas'].":".$d['minutos'].":".$d['segundos']);
+      			}
+      				
       		$this->Guardar();
       		if($this->getError()){
       			return json_encode(array("status" => "error", "message" => $this->getStrError()));
