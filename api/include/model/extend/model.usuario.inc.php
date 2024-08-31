@@ -106,6 +106,23 @@
 			}
 			return $arreglo;
 		}
+		
+		public function getUsuariosRol()
+		{
+			//$inicial = (($pagina) * $tamano);
+			$query = "select u.idUsuario,nombre,apellidoPaterno, l.idRol, `nombreRol`, estatusLogin, idLogin
+			FROM usuario u            
+			join `login` l on l.`idUsuario` =u.`idUsuario`
+			left join rol r on r.`idRol` = l.`idRol` 	";
+			$arreglo = array();
+			$resultado = mysqli_query($this->dbLink, $query);
+			if ($resultado && mysqli_num_rows($resultado) > 0) {
+				while ($row_inf = mysqli_fetch_assoc($resultado)){
+					$arreglo[] = $row_inf;
+				}
+			}
+			return $arreglo;
+		}
 
 
 	}

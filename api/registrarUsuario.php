@@ -29,7 +29,7 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
   }else{
   	http_response_code(200);
   }
-  echo $usuario;
+  echo json_encode($usuario);
 }elseif($_SERVER['REQUEST_METHOD'] == "PUT"){
   //echo "ut";
 	$datos = file_get_contents("php://input");

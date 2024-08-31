@@ -44,28 +44,27 @@ class controladorCategoria_curso extends ModeloCategoria_curso{
   	$headers = getallheaders();
   	 
   	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
-  		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
   		http_response_code(401);
   	}else{
   		try {        // decode jwt
   			global $key;
   			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-  			if(isset($d['nombre'])){
+  			if(isset($d['nombreCategoria']) && !empty($d['nombreCategoria'])){
   				$fecha = date('Y-m-j H:i:s');
-  				$this->setNombreCategoria($d['nombre']);
-  				$this->setPoster($d['poster']);
-  				$this->setIdCategoria($d['categoria']);
+  				$this->setNombreCategoria($d['nombreCategoria']); 				  				
   				$this->setIdUsuarioRegistro($decoded->data->id);
+  				$this->setEstatusActivo();
   				$this->setFechaRegistro($fecha);
   				$this->Guardar();
   				if($this->getError()){
-  					return json_encode(array("status" => "error", "message" => $this->getStrError()));
+  					return (array("status" => "error", "message" => $this->getStrError()));
   				}else{
-  					return json_encode(array("status" => "ok", "message" => "Informacion almacenada con exito.",  "idCurso" => $this->getIdCurso(), "codigo"=> "200"));
+  					return (array("status" => "ok", "message" => "Informacion almacenada con exito.",  "idCategoria" => $this->getIdCategoria(), "codigo"=> "200"));
   				}
   			}else{
-  				return json_encode(array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401"));
+  				return (array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401"));
   			}
   		}
   		// if decode fails, it means jwt is invalid
@@ -77,67 +76,73 @@ class controladorCategoria_curso extends ModeloCategoria_curso{
   		}
   	}
   }
-  public function putUsuario($datos) {
+  public function putCurso($datos) {
   	//
   	$d = json_decode($datos,true);
-    if(!isset($d['token'])){
-  		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  	global $key;
+  	$headers = getallheaders();
+  	 
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  		http_response_code(401);
   	}else{
-      try {        // decode jwt
-        $decoded = JWT::decode($d['token'], $key, array('HS256'));
-        // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-        if(isset($d['id'])){
-      		$fecha = date('Y-m-j H:i:s');
-      		$this->setFiusuario_id($d['id']);
-      		$this->setFcnombre($d['nombre']);
-      		$this->setFcapellidos($d['apellidos']);
-      		$this->setFccorreo($d['correo']);
-      		$this->setFctelefono($d['telefono']);
-      		$this->setFcestatusActivo();
-      		//$this->setFdfecha_registro($fecha);
-      		$this->Guardar();
-      		if($this->getError()){
-      			return json_encode(array("status" => "error", "message" => $this->getStrError()));
-
-      		}else{
-      			return json_encode(array("status" => "ok", "message" => "Informacion almacenada con exito."));;
-      		}
-      	}else{
-      		return json_encode(array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto."));
-      	}
-    }
-    // if decode fails, it means jwt is invalid
-    catch (Exception $e){
-    // set response code     //http_response_code(401);
-    // tell the user access denied  & show error message
-    //echo json_encode(array(        "message" => "Access denied.",        "error" => $e->getMessage()    ));
-    return json_encode(array("status" => "error", "message" => $e->getMessage(), "codigo"=> "400"));
-    }
+  		try {        // decode jwt
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
+  			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
+  			if(isset($d['idCategoria']) && !empty($d['idCategoria']) 
+  					&& isset($d['nombreCategoria']) && !empty($d['nombreCategoria'])  					
+  					){
+  						$fecha = date('Y-m-j H:i:s');
+  						$this->setIdCategoria($d['idCategoria']);
+  						$this->setNombreCategoria($d['nombreCategoria']);
+  						//if (isset($d['estatus']) && !empty($d['estatus']))
+  							//$this->setEstatus($d['estatus']);    
+  						$this->Guardar();
+  						if($this->getError()){
+  							return array("status" => "error", "message" => $this->getStrError());
+  
+  						}else{
+  								return array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200");
+  						}
+  			}else{
+  				return array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto.", "codigo"=> "401");
+  			}
+  		}
+  		// if decode fails, it means jwt is invalid
+  		catch (Exception $e){
+  			// set response code     //http_response_code(401);
+  			// tell the user access denied  & show error message
+  			//echo json_encode(array(        "message" => "Access denied.",        "error" => $e->getMessage()    ));
+  			return array("status" => "error", "message" => $e->getMessage(), "codigo"=> "400");
+  		}
   	}
   }
   	public function deleteUsuario($datos) {
   		//
-  		$d = json_decode($datos,true);
-      if(!isset($d['token'])){
-    		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
-    	}else{
-        try {        // decode jwt
-          $decoded = JWT::decode($d['token'], $key, array('HS256'));
+  		global $key;
+  	$headers = getallheaders();
+  	 
+  	if(!isset($headers['X-Auth-Token']) && !empty($headers['X-Auth-Token'])){
+  		return json_encode(array("status" => "error", "message" => "No autorizado", "codigo"=> "401"));
+  		http_response_code(401);
+  	}else{
+  		try {        // decode jwt
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
           // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-          if(isset($d['id'])){
+          if(isset($_GET['idCategoria']) && !empty($_GET['idCategoria'])){
       			$fecha = date('Y-m-j H:i:s');
-      			$this->setFiusuario_id($d['id']);
-      			$this->setFcestatusSuspendido();
+      			$this->setIdCategoria($_GET['idCategoria']);
+      			$this->setEstatusSuspendido();
       			//$this->setFdfecha_registro($fecha);
       			$this->Guardar();
       			if($this->getError()){
-      				return json_encode(array("status" => "error", "message" => "ocurrio un Error."));
+      				return (array("status" => "error", "message" => "ocurrio un Error.", "codigo"=> "401"));
 
       			}else{
-      				return json_encode(array("status" => "ok", "message" => "Informacion eliminada con exito."));;
+      				return (array("status" => "ok", "message" => "Informacion eliminada con exito.", "codigo"=> "200"));;
       			}
       		}else{
-      			return json_encode(array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto."));
+      			return (array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto.", "codigo"=> "401"));
       		}
       }
       // if decode fails, it means jwt is invalid

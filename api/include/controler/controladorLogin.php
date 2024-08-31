@@ -12,7 +12,7 @@ use \Firebase\JWT\JWT;
 
 error_reporting(E_ALL);
 
-class controladorUsuarios extends ModeloUsuario{
+class controladorLogin extends ModeloLogin{
   #------------------------------------------------------------------------------------------------------#
   #--------------------------------------------Inicializacion--------------------------------------------#
   #------------------------------------------------------------------------------------------------------#
@@ -160,64 +160,17 @@ catch (Exception $e){
   			global $key;
   			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
   			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-  			if(isset($d['idUsuario']) && !empty($d['idUsuario'])
-  					&& isset($d['nombre']) && !empty($d['nombre'])
-  					&& isset($d['apellidoPaterno']) && !empty($d['apellidoPaterno'])
-  					&& isset($d['sexo']) && !empty($d['sexo'])
-  					&& isset($d['correoElectronico']) && !empty($d['correoElectronico'])
-  					//&& isset($d['nombre']) && !empty($d['apellidos'])
-  					//&& isset($d['nombre']) && !empty($d['apellidos'])
+  			if(isset($d['idLogin']) && !empty($d['idLogin'])  					
   					){
-  				$this->transaccionIniciar();
-  				$this->setIdUsuario($d['idUsuario']);
-  				$this->setNombre($d['nombre']);
-  				$this->setApellidoPaterno($d['apellidoPaterno']);
-  				$this->setApellidoMaterno($d['apellidoMaterno']);
-  				$this->setCorreoElectronico($d['correoElectronico']);
-  				$this->setSexo($d['sexo']);
-  				//$this->setTelefono($d['telefono']);
-  				$this->setEstatusActivo();
-  				//$this->setFechaRegistro($fecha);
-  				if(isset($d['avatar']) && !empty($d['avatar']) ){
-  					$this->setAvatar($d['avatar']);
-  				}
+  				
+  				$this->setIdLogin($d['idLogin']);  				
+  				$this->setEstatusLoginActivo();  				
   				$this->Guardar();
-  				if($this->getError()){
-  					$this->transaccionRollback();
-  					return json_encode(array("status" => "error", "message" => $this->getStrError()));
-  				}else{
-  					
-  					$fecha = date('Y-m-j H:i:s');
-  						
-  					$login = new ModeloLogin();
-  					$idLogin = $login->getLoginByIdUsuario($d['idUsuario']);
-  					if($idLogin>0){
-  						$login->setIdLogin($idLogin);
-  						$login->setIdUsuario($d['idUsuario']);
-  						$login->setUserName($d['correoElectronico']);
-  						//$login->setIdRol(3);//alumno
-  						if(isset($d['password']) && !empty($d['password'])){
-  							$random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
-  							$passwordSalt = hash('sha512', $d['password']. $random_salt);
-	  						$login->setSemilla($random_salt);
-	  						$login->setPassword($passwordSalt);
-  						}
-  						$login->setEstatusLoginActivo();
-  						$login->setFechaRegistro($fecha);
-  							
-  						$login->Guardar();
-  						if($login->getError()){
-  							$this->transaccionRollback();
-  							return json_encode(array("status" => "error", "message" => $login->getStrError()));
-  							return $r;
-  						}
-  					}
-  					
-  					
-  					$this->transaccionCommit();
-  					
+  				if($this->getError()){  					
+  					return (array("status" => "error", "message" => $this->getStrError(), "codigo"=> "401"));
+  				}  					
   				return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200", "data"=>""));
-  				}
+  				
   			}else{
   				return (array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401", "data"=>Array()));
   			}
@@ -231,7 +184,7 @@ catch (Exception $e){
   		}
   	}
   }
-  	public function deleteUsuario($datos) {
+  	public function deleteLogin() {
   		//
   		$headers = getallheaders();
   	//die(var_dump($headers));
@@ -243,20 +196,20 @@ catch (Exception $e){
   			global $key;
   			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
           // show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
-          if(isset($d['id'])){
+          if(isset($_GET['idLogin']) && !empty($_GET['idLogin'])){
       			$fecha = date('Y-m-j H:i:s');
-      			$this->setFiusuario_id($d['id']);
-      			$this->setFcestatusSuspendido();
+      			$this->setIdLogin($_GET['idLogin']);
+      			$this->setEstatusLoginSuspendido();
       			//$this->setFdfecha_registro($fecha);
       			$this->Guardar();
       			if($this->getError()){
-      				return json_encode(array("status" => "error", "message" => "ocurrio un Error."));
+      				return (array("status" => "error", "message" => "ocurrio un Error.", "codigo"=> "401"));
 
       			}else{
-      				return json_encode(array("status" => "ok", "message" => "Informacion eliminada con exito."));;
+      				return (array("status" => "ok", "message" => "Informacion eliminada con exito.", "codigo"=> "200"));;
       			}
       		}else{
-      			return json_encode(array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto."));
+      			return (array("status" => "error", "message" => "Datos enviados incompletos o con formato incorrecto.", "codigo"=> "401"));
       		}
       }
       // if decode fails, it means jwt is invalid

@@ -78,6 +78,7 @@
 			$inicial = (($pagina) * $tamano);
 			$query = "SELECT  idCategoria, nombreCategoria, nivel
 			FROM categoria_curso
+			where estatus = 'Activo'
 			LIMIT $inicial, $tamano
 			";
 			$arreglo = array();

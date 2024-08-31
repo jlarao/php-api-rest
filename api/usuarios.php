@@ -38,6 +38,24 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
   	}
   	echo json_encode($usuario);
   }
+elseif( isset($_GET['usuarios_rol']) ){
+    require_once 'masterInclude.inc.php';
+    require_once FOLDER_CONTROLLER. "controladorUsuarios.php";
+  	$usuarios = new controladorUsuarios();
+    header("Content-Type: application/json; charset=UTF-8");
+  	$usuario = $usuarios->obtenerUsuariosRol();
+  	if(isset($usuario['status'])=="ok"){
+  		http_response_code(200);
+  	}if(isset($usuario['status'])=="error"){
+  		if(isset($usuario['codigo'])){
+  			http_response_code($usuario['codigo']);//http_response_code(401);
+  		}
+  	}else{
+  		http_response_code(200);
+  	}
+  	echo json_encode($usuario);
+  
+}
 }
 elseif($_SERVER['REQUEST_METHOD'] == "POST"){
   $datos = file_get_contents("php://input");
@@ -73,11 +91,11 @@ elseif($_SERVER['REQUEST_METHOD'] == "POST"){
 	echo json_encode($usuario);
 }elseif($_SERVER['REQUEST_METHOD'] == "DELETE"){
   //echo "delete";
-	$datos = file_get_contents("php://input");
+	//$datos = file_get_contents("php://input");
 	require_once 'masterInclude.inc.php';
 	require_once FOLDER_CONTROLLER. "controladorUsuarios.php";
 	$usuarios = new controladorUsuarios();
-	$usuario  = $usuarios->deleteUsuario($datos);
+	$usuario  = $usuarios->deleteUsuario();
 	header("Content-Type: application/json; charset=UTF-8");
 	if(isset($usuario['status'])=="ok"){
 		http_response_code(200);

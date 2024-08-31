@@ -13,8 +13,9 @@
 		var $nivel=0;
 		var $fechaRegistro='';
 		var $idUsuarioRegistro=0;
+		var $estatus='';
 
-		var $__s=array("idCategoria","nombreCategoria","nivel","fechaRegistro","idUsuarioRegistro");
+		var $__s=array("idCategoria","nombreCategoria","nivel","fechaRegistro","idUsuarioRegistro","estatus");
 		var $__ss=array();
 
 		#------------------------------------------------------------------------------------------------------#
@@ -61,6 +62,19 @@
 			
 			$this->idUsuarioRegistro=$idUsuarioRegistro;
 		}
+		public function setEstatus($estatus)
+		{
+			
+			$this->estatus=$estatus;
+		}
+		public function setEstatusActivo()
+		{
+			$this->estatus='Activo';
+		}
+		public function setEstatusSuspendido()
+		{
+			$this->estatus='Suspendido';
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#-----------------------------------------------Unsetter-----------------------------------------------#
@@ -93,6 +107,10 @@
 		{
 			return $this->idUsuarioRegistro;
 		}
+		public function getEstatus()
+		{
+			return $this->estatus;
+		}
 
 		#------------------------------------------------------------------------------------------------------#
 		#------------------------------------------------Querys------------------------------------------------#
@@ -112,6 +130,7 @@
 			$this->nivel=0;
 			$this->fechaRegistro='';
 			$this->idUsuarioRegistro=0;
+			$this->estatus='';
 		}
 
 		
@@ -121,8 +140,8 @@
 		{
 			try
 			{
-				$SQL="INSERT INTO categoria_curso(nombreCategoria,nivel,fechaRegistro,idUsuarioRegistro)
-						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreCategoria) . "','" . mysqli_real_escape_string($this->dbLink,$this->nivel) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "')";
+				$SQL="INSERT INTO categoria_curso(nombreCategoria,nivel,fechaRegistro,idUsuarioRegistro,estatus)
+						VALUES('" . mysqli_real_escape_string($this->dbLink,$this->nombreCategoria) . "','" . mysqli_real_escape_string($this->dbLink,$this->nivel) . "','" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "','" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "')";
 				$result=mysqli_query($this->dbLink,$SQL);
 				if(!$result)
 					return $this->setSystemError("Error en la insercion de registro.","[" . $SQL . "][" . mysqli_error($this->dbLink) . "][ModeloBaseCategoria_curso::Insertar]");
@@ -142,7 +161,7 @@
 		{
 			try
 			{
-				$SQL="UPDATE categoria_curso SET nombreCategoria='" . mysqli_real_escape_string($this->dbLink,$this->nombreCategoria) . "',nivel='" . mysqli_real_escape_string($this->dbLink,$this->nivel) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "'
+				$SQL="UPDATE categoria_curso SET nombreCategoria='" . mysqli_real_escape_string($this->dbLink,$this->nombreCategoria) . "',nivel='" . mysqli_real_escape_string($this->dbLink,$this->nivel) . "',fechaRegistro='" . mysqli_real_escape_string($this->dbLink,$this->fechaRegistro) . "',idUsuarioRegistro='" . mysqli_real_escape_string($this->dbLink,$this->idUsuarioRegistro) . "',estatus='" . mysqli_real_escape_string($this->dbLink,$this->estatus) . "'
 					WHERE idCategoria=" . $this->idCategoria;
 				
 				$result=mysqli_query($this->dbLink,$SQL);
@@ -184,7 +203,7 @@
 			try
 			{
 				$SQL="SELECT
-						idCategoria,nombreCategoria,nivel,fechaRegistro,idUsuarioRegistro
+						idCategoria,nombreCategoria,nivel,fechaRegistro,idUsuarioRegistro,estatus
 					FROM categoria_curso
 					WHERE idCategoria=" . mysqli_real_escape_string($this->dbLink,$this->idCategoria);
 					

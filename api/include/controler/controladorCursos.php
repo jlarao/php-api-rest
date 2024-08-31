@@ -72,6 +72,70 @@ class controladorCursos extends ModeloCurso{
   	}
   }
   
+  public function obtenerCursosByIdUsuario($al)
+  {
+  	//$curso = $this->getCurso($id);
+  	//return $curso;
+  	global $key;
+  	$headers = getallheaders();
+  	//die(var_dump($headers));
+  	if(!isset($headers['X-Auth-Token']) ){
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401", "data"=>Array()));
+  
+  	}else{
+  		try {        // decode jwt
+  			global $key;
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
+  			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
+  			if(isset($_GET['idUsuario']) && isset($_GET['idUsuario']) ){
+  				$cursos = $this->getCursosByIdUsuario($_GET['idUsuario']);
+  				return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200", "data"=>$cursos));
+  			}else{
+  				return (array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401", "data"=>Array()));
+  			}
+  		}
+  		// if decode fails, it means jwt is invalid
+  		catch (Exception $e){
+  			// set response code     //http_response_code(401);
+  			// tell the user access denied  & show error message
+  			//echo json_encode(array(        "message" => "Access denied.",        "error" => $e->getMessage()    ));
+  			return (array("status" => "error", "message" => $e->getMessage(), "codigo"=> "400", "data"=>Array()));
+  		}
+  	}
+  }
+  
+  public function obtenerCursosUsuarioNoInscrito($al)
+  {
+  	//$curso = $this->getCurso($id);
+  	//return $curso;
+  	global $key;
+  	$headers = getallheaders();
+  	//die(var_dump($headers));
+  	if(!isset($headers['X-Auth-Token']) ){
+  		return (array("status" => "error", "message" => "No autorizado", "codigo"=> "401", "data"=>Array()));
+  
+  	}else{
+  		try {        // decode jwt
+  			global $key;
+  			$decoded = JWT::decode($headers['X-Auth-Token'], $key, array('HS256'));
+  			// show user details /*        echo json_encode(array(            "message" => "Access granted.",            "data" => $decoded->data        ));*/
+  			if(isset($_GET['NoInscrito']) && isset($_GET['NoInscrito']) ){
+  				$cursos = $this->getCursosUsuarioNoInscrito($_GET['NoInscrito']);
+  				return (array("status" => "ok", "message" => "Informacion almacenada con exito.", "codigo"=> "200", "data"=>$cursos));
+  			}else{
+  				return (array("status" => "error", "message" => "parametros faltantes.", "codigo"=> "401", "data"=>Array()));
+  			}
+  		}
+  		// if decode fails, it means jwt is invalid
+  		catch (Exception $e){
+  			// set response code     //http_response_code(401);
+  			// tell the user access denied  & show error message
+  			//echo json_encode(array(        "message" => "Access denied.",        "error" => $e->getMessage()    ));
+  			return (array("status" => "error", "message" => $e->getMessage(), "codigo"=> "400", "data"=>Array()));
+  		}
+  	}
+  }
+  
   public function obtenerCursosRepro($id)
   {
   	//$curso = $this->getCurso($id);
